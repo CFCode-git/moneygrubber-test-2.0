@@ -1,31 +1,44 @@
 <template>
-  <div class="nav">
-    <router-link to="/money">
+  <nav>
+    <router-link to="/money" class="item">
       <Icon name="money"/>
       记账
     </router-link>
-    |
-    <router-link to="/statistics">
+    <router-link to="/statistics" class="item">
       <Icon name="statistics"/>
       明细
     </router-link>
-    |
-    <router-link to="/chart">
+    <router-link to="/chart" class="item">
       <Icon name="charts"/>
       图表
     </router-link>
-  </div>
+  </nav>
 </template>
 
 <script lang="ts">
-  import x from '@/assets/icons/charts.svg';
-
-  console.log(x);
   export default {
     name: 'Nav'
   };
 </script>
 
-<style scoped lang="SCSS">
+<style scoped lang="scss">
+  nav {
+    display: flex;
+    box-shadow: 0 0 3px rgba(0, 0, 0, .25);
+    flex-direction: row;
+    font-size:12px;
 
+    > .item {
+      width: 33.333333%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2px 0;
+      .icon{
+        width:32px;
+        height:32px;
+      }
+    }
+  }
 </style>
