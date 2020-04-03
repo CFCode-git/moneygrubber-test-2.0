@@ -21,11 +21,11 @@ const routes = [
     component: Labels
   },
   {
-    path:'chart',
+    path:'/chart',
     component: Chart
   },
   {
-    path:'statistics',
+    path:'/statistics',
     component: Statistics
   }
 ];

@@ -1,10 +1,13 @@
 <template>
-  <div>chart</div>
+  <div>chart
+    <Nav/>
+  </div>
+
 </template>
 
 <script lang="ts">
   export default {
-    name: 'Chart'
+    name: 'Chart',
   };
 </script>
 

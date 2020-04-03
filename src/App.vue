@@ -1,15 +1,10 @@
 <template>
   <div>
     <router-view/>
-    <div>
-      <router-link to="/money">记账</router-link>
-      |
-      <router-link to="/statistics">明细</router-link>
-      |
-      <router-link to="/chart">图表</router-link>
-    </div>
   </div>
 </template>
+
+
 
 <style lang="scss">
   #app {
