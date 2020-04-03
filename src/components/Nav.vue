@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="nav">
     <router-link to="/money">记账</router-link>
     |
     <router-link to="/statistics">明细</router-link>
