@@ -14,25 +14,10 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  // import {Component} from 'vue-property-decorator';
-  import Component from 'vue-class-component';
-
-  @Component({
-    props: {
-      propMessage: String
-    }
-  })
+  import {Component} from 'vue-property-decorator';
+  @Component
   export default class Types extends Vue {
     type = '-';
-
-    msg = 123;
-
-    helloMsg = 'Hello,' + this.propMessage;
-
-    mounted(){
-      console.log(this.helloMsg);
-    }
-
     selectType(type: string) {
       if (type !== '+' && type !== '-') {
         throw new Error('this is a wrong type');
@@ -40,25 +25,6 @@
       this.type = type;
     }
   }
-
-  // export default {
-  //   name:'Types',
-  //   data(){
-  //     return{
-  //       type:'-'
-  //     }
-  //   },
-  //   methods:{
-  //     selectType(type){
-  //       if(type!=='+'&&type!=='-'){
-  //         throw new Error('this is a wrong type')
-  //       }
-  //       this.type=type;
-  //     }
-  //   }
-  // }
-
-
 </script>
 
 <style scoped lang="scss">
