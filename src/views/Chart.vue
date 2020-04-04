@@ -1,8 +1,9 @@
 <template>
   <div>
     <Layout>
-      chart
+
     </Layout>
+
   </div>
 
 </template>
