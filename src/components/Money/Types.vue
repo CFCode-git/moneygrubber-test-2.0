@@ -1,40 +1,109 @@
 <template>
+  <div class="types-wrapper">
     <ul class="types">
-      <li class="selected">支出</li>
-      <li>收入</li>
+      <li :class="type==='-'&& 'selected'"
+          @click="selectType('-')">支出
+      </li>
+      <li :class="type==='+'&& 'selected'"
+          @click="selectType('+')">收入
+      </li>
     </ul>
+    <button class="cancel">取消</button>
+  </div>
 </template>
 
 <script lang="ts">
-  export default {
-    name: 'Types'
-  };
+  import Vue from 'vue';
+  // import {Component} from 'vue-property-decorator';
+  import Component from 'vue-class-component';
+
+  @Component({
+    props: {
+      propMessage: String
+    }
+  })
+  export default class Types extends Vue {
+    type = '-';
+
+    msg = 123;
+
+    helloMsg = 'Hello,' + this.propMessage;
+
+    mounted(){
+      console.log(this.helloMsg);
+    }
+
+    selectType(type: string) {
+      if (type !== '+' && type !== '-') {
+        throw new Error('this is a wrong type');
+      }
+      this.type = type;
+    }
+  }
+
+  // export default {
+  //   name:'Types',
+  //   data(){
+  //     return{
+  //       type:'-'
+  //     }
+  //   },
+  //   methods:{
+  //     selectType(type){
+  //       if(type!=='+'&&type!=='-'){
+  //         throw new Error('this is a wrong type')
+  //       }
+  //       this.type=type;
+  //     }
+  //   }
+  // }
+
+
 </script>
 
 <style scoped lang="scss">
-  .types {
-    background: #c4c4c4;
+  .types-wrapper {
+    background: #ffda47;
     display: flex;
-    text-align: center;
-    font-size: 24px;
+    justify-content: center;
+    position: relative;
 
-    > li {
-      width: 50%;
-      height: 64px;
+    .types {
+      background: #ffda47;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
+      font-size: 20px;
+      /*margin-top:5px;*/
+      > li {
+        width: 50%;
+        height: 48px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        padding: 20px 20px 10px;
 
-      &.selected::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: #333;
+        &.selected::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background: #333;
+        }
       }
+    }
+
+    .cancel {
+      font-size: 14px;
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      border: 0;
+      background-color: transparent;
+      padding-right: 16px;
+      padding-top: 7px;
     }
   }
 </style>

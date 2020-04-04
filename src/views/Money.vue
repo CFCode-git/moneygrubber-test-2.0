@@ -5,7 +5,7 @@
       <NumberPad/>
       <Notes/>
       <Tags/>
-      <Types/>
+      <Types prop-message="我是propMessage"/>
 
     </Layout>
   </div>
