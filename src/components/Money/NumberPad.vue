@@ -1,28 +1,28 @@
 <template>
   <div class="numberPad">
-    <div class="output">100</div>
+    <div class="output">{{output}}</div>
     <div class="buttons">
-      <button>1</button>
-      <button>2</button>
-      <button>3</button>
-      <button>
+      <button @click="inputContent">1</button>
+      <button @click="inputContent">2</button>
+      <button @click="inputContent">3</button>
+      <button @click="add">
         <Icon name="add"/>
       </button>
-      <button>4</button>
-      <button>5</button>
-      <button>6</button>
-      <button>
+      <button @click="inputContent">4</button>
+      <button @click="inputContent">5</button>
+      <button @click="inputContent">6</button>
+      <button @click="minus">
         <Icon name="minus"/>
       </button>
-      <button>7</button>
-      <button>8</button>
-      <button>9</button>
-      <button class="clear">
+      <button @click="inputContent">7</button>
+      <button @click="inputContent">8</button>
+      <button @click="inputContent">9</button>
+      <button>
         <Icon name="clear"/>
       </button>
-      <button>.</button>
-      <button>0</button>
-      <button>
+      <button @click="inputContent">.</button>
+      <button @click="inputContent">0</button>
+      <button @click="backspace">
         <Icon name="backspace"/>
       </button>
       <button>
@@ -33,12 +33,119 @@
 </template>
 
 <script lang="ts">
-  export default {
-    name: 'NumberPad'
-  };
+  import Vue from 'vue';
+  import {Component} from 'vue-property-decorator';
+
+  @Component
+  export default class NumberPad extends Vue {
+    output = '0';
+
+    inputContent(event: MouseEvent) {
+      const button = event.target as HTMLButtonElement;
+      const input = button.textContent as string;
+      if (this.output.length === 16) {return;}
+      this.handleNumber(input);
+    }
+
+    handleNumber(input: string) {
+      if (this.output === '0') {
+        if ('0123456789'.indexOf(input) >= 0) {
+          this.output = input;
+        } else if (input === '.') {
+          this.output += input;
+        }
+      } else {
+        if (input === '.') {
+          this.handleDot();
+        } else {
+          this.output += input;
+        }
+      }
+    }
+
+    handleDot() {
+      const lastIndex = this.output.length - 1;
+      if (this.output[lastIndex] === '+' || this.output[lastIndex] === '-') {
+        return;
+      }
+      if (this.output.indexOf('+') < 0 && this.output.indexOf('-') < 0) {
+        console.log(1);
+        if (this.output.indexOf('.') >= 0) {return;}
+      } else {
+        if (this.output.indexOf('+') >= 0) {
+          const item = this.output.split('+');
+
+          if (item[1].indexOf('.') >= 0) {
+            return;
+          } else {
+            this.output += '.';
+          }
+        } else if (this.output.indexOf('-') >= 0) {
+          const item = this.output.split('-');
+
+          if (item[1].indexOf('.') >= 0) {
+            return;
+          } else {
+            this.output += '.';
+          }
+        }
+      }
+    }
+
+    handleMinusAndAdd(input: string) {
+      let result;
+      const lastIndex = this.output.length - 1;
+      if (this.output[lastIndex] === '+' || this.output[lastIndex] === '-') {
+        this.output = this.output.slice(0, lastIndex);
+        // this.output = this.output.slice(0,-2);
+        this.output += input;
+        return;
+      }
+      if (this.output.indexOf('+') < 0 && this.output.indexOf('-') < 0) {
+        if (this.output[lastIndex] === '.') { return; }
+        this.output += input;
+      } else {
+        if (this.output.indexOf('+') >= 0) {
+          const item = this.output.split('+');
+          result = parseFloat(item[0]) + parseFloat(item[1]);
+          // result = result.toFixed(2);
+          this.output = result.toString() + input;
+        } else if (this.output.indexOf('-') >= 0) {
+          const item = this.output.split('-');
+          console.log(item);
+          console.log(item.length)
+          if(item.length>2){
+            result = (-1 * parseFloat(item[1])) - parseFloat(item[2]);
+          }else{
+            result =  parseFloat(item[0]) - parseFloat(item[1]);
+          }
+          // result = result.toFixed(2);
+          this.output = result.toString() + input;
+        }
+      }
+    }
+
+    backspace() {
+      if (this.output.length === 1) {
+        this.output = '0';
+      } else {
+        this.output = this.output.slice(0, -1);
+      }
+    }
+
+    add() {
+      this.handleMinusAndAdd('+');
+    }
+
+    minus() {
+      this.handleMinusAndAdd('-');
+    }
+
+  }
 </script>
 <style scoped lang="scss">
   @import "~@/assets/styles/helper.scss";
+
   .numberPad {
     .output {
       @extend %clearFix;
@@ -47,6 +154,7 @@
       font-family: Consolas, monospace;
       padding: 9px 16px;
       text-align: right;
+      height: 72px;
     }
 
     .buttons {
