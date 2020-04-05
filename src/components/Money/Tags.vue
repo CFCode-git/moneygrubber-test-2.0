@@ -1,13 +1,11 @@
 <template>
   <div class="tags">
-    <div class="new">
-      <button @click="createTag">新增标签</button>
-    </div>
-    <ul class="current">
-      <li v-for="tag in dataSource" :key="tag"
-          :class="{selected: selectedTag === tag}"
-          @click="toggle(tag)">{{tag}}
-        <!--        :class="{selected: selectedTags.indexOf(tag)>=0}"-->
+    <ul class="list">
+      <li v-for="(tag,index) in tagList" :key="index"
+          :class="{selected: highlight.name === tag.name }"
+          @click="toggle(tag)">
+          <Icon :name="tag.name"/>
+        <span>{{tag.value}}</span>
       </li>
     </ul>
   </div>
@@ -19,87 +17,56 @@
 
   @Component
   export default class Tags extends Vue {
-    @Prop() readonly dataSource: string[] | undefined;
-    @Prop() readonly value!: string
-    // selectedTags: string[] = [];
-    selectedTag = this.value;
-
-    toggle(tag: string) {
-      if (this.selectedTag !== '') {
-        this.selectedTag = '';
-      } else {
-        this.selectedTag = tag;
-      }
-      this.selectedTag = tag;
-      // console.log(tag);
-      this.$emit('update:value', this.selectedTag);
+    @Prop() readonly tagList!: TagItem[];
+    @Prop() readonly selectedTag!: TagItem;
+    highlight = this.selectedTag;
+    toggle(tag: TagItem) {
+      this.highlight= tag;
+      console.log(tag);
+      this.$emit('update:selected-tag', this.highlight);
     }
-
-    // toggle2(tag: string) {
-    //   const index = this.selectedTags.indexOf(tag);
-    //   if (this.selectedTags.length > 0) {
-    //     this.selectedTags = [];
+    // createTag() {
+    //   // this.$router.push('/labels')
+    //   const name = window.prompt('请输入标签名');
+    //   if (name === '') {
+    //     window.alert('标签名不能为空');
+    //   } else if (this.dataSource) {
+    //     this.$emit('update:dataSource', [...this.dataSource, name]);
     //   }
-    //   if (this.selectedTags.indexOf(tag) >= 0) {
-    //     this.selectedTags.splice(index, 1);
-    //   } else {
-    //     this.selectedTags.push(tag);
-    //   }
-    //   this.$emit('update:value', this.selectedTags);
     // }
-
-    createTag() {
-      // this.$router.push('/labels')
-      const name = window.prompt('请输入标签名');
-      if (name === '') {
-        window.alert('标签名不能为空');
-      } else if (this.dataSource) {
-        this.$emit('update:dataSource', [...this.dataSource, name]);
-      }
-    }
   }
 </script>
 
 <style scoped lang="scss">
   .tags {
-    font-size: 14px;
+    font-size: 12px;
     padding: 16px;
     flex-grow: 1;
-    display: flex;
-    flex-direction: column-reverse;
     overflow: auto;
-
-    > .current {
+    > .list {
       display: flex;
+      flex-direction: row;
       flex-wrap: wrap;
-      overflow: auto;
-
       > li {
-        background: #d9d9d9;
-        $h: 24px;
-        height: $h;
-        line-height: $h;
-        border-radius: $h/2;
-        padding: 0 16px;
-        margin-right: 12px;
-        margin-top: 4px;
-
-        &.selected {
-          background-color: #ffda47;
+        width:25%;
+        display: flex;
+        align-items: center;
+        flex-direction:column;
+        padding:8px 10px;
+        .icon {
+          height:50px;
+          width:50px;
+          background-color:#e8e8e8;
+          padding:5px;
+          border-radius: 50%;
         }
-      }
-    }
-
-    > .new {
-      padding-top: 16px;
-
-      button {
-        background: transparent;
-        border: none;
-        color: #999;
-        border-bottom: 1px solid;
-        padding: 0 4px;
+        &.selected{
+          .icon{
+            background-color: #ffda47;
+          }
+        }
       }
     }
   }
 </style>
+

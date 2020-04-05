@@ -1,12 +1,11 @@
 <template>
   <div>
     <Layout class-prefix="layout">
-
+      {{record}}
       <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
       <Notes :value.sync="record.notes"/>
-      <Tags :data-source.sync="tags" :value.sync="record.tag"/>
+      <Tags :tag-list.sync="tagList" :selected-tag.sync="record.tag" />
       <Types :value.sync="record.type"/>
-
     </Layout>
   </div>
 </template>
@@ -18,34 +17,32 @@
   import Notes from '@/components/Money/Notes.vue';
   import Tags from '@/components/Money/Tags.vue';
   import Types from '@/components/Money/Types.vue';
+  import model from '@/model.ts';
 
-  const recordList: Record[] = JSON.parse(window.localStorage.getItem('recordList') || '[]');
-
-  type Record = {
-    tag: string;
-    notes: string;
-    type: string;
-    amount: number;
-    createdAt?: Date;
-  }
+  const recordList = model.fetch();
 
   @Component({
     components: {Types, Tags, Notes, NumberPad}
   })
   export default class Money extends Vue {
-    tags = ['衣', '食', '住', '行'];
-    recordList: Record[] = recordList;
-    record: Record = {tag: '衣', notes: '', type: '-', amount: 0};
+    tagList: TagItem[] = [
+      {name: 'food', value: '餐饮'},
+      {name: 'entertainment', value: '娱乐'},
+      {name: 'shopping', value: '购物'}
+    ];
+
+    recordList: RecordItem[] = recordList;
+    record: RecordItem = {tag: {name: 'food', value: '餐饮'}, notes: '', type: '-', amount: 0};
 
     saveRecord() {
-      const record2: Record = JSON.parse(JSON.stringify(this.record));
+      const record2: RecordItem = model.clone(this.record);
       record2.createdAt = new Date();
       this.recordList.push(record2);
     }
 
     @Watch('recordList')
     onRecordListonChange() {
-      window.localStorage.setItem('recordList', JSON.stringify(this.recordList));
+      model.save(this.recordList);
     }
   }
 </script>

@@ -5,6 +5,7 @@ import Labels from '@/views/Labels.vue';
 import Chart from '@/views/Chart.vue';
 import Statistics from '@/views/Statistics.vue';
 import NotFound from '@/views/NotFound.vue';
+import EditRecord from '@/views/EditRecord.vue';
 
 Vue.use(VueRouter);
 
@@ -28,6 +29,11 @@ const routes = [
   {
     path: '/statistics',
     component: Statistics
+  },
+  {
+    path:'/record/edit',
+    component:EditRecord
+
   },
   {
     path: '*',

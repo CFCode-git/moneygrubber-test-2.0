@@ -59,7 +59,6 @@
         }
       }
     }
-
     .cancel {
       font-size: 14px;
       position: absolute;
