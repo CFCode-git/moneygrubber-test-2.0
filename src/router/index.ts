@@ -6,6 +6,7 @@ import Chart from '@/views/Chart.vue';
 import Statistics from '@/views/Statistics.vue';
 import NotFound from '@/views/NotFound.vue';
 import EditRecord from '@/views/EditRecord.vue';
+import AddTag from '@/views/AddTag.vue';
 
 Vue.use(VueRouter);
 
@@ -31,9 +32,12 @@ const routes = [
     component: Statistics
   },
   {
-    path:'/record/edit',
-    component:EditRecord
-
+    path: '/record/edit',
+    component: EditRecord
+  },
+  {
+    path: '/addtag',
+    component: AddTag
   },
   {
     path: '*',

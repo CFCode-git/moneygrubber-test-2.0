@@ -1,11 +1,15 @@
 <template>
   <div class="tags">
     <ul class="list">
-      <li v-for="(tag,index) in tagList" :key="index"
-          :class="{selected: highlight.name === tag.name }"
+      <li v-for="tag in tagList" :key="tag.name"
+          :class="{selected: selectedTag.name === tag.name }"
           @click="toggle(tag)">
           <Icon :name="tag.name"/>
         <span>{{tag.value}}</span>
+      </li>
+      <li v-if="expense" @click="add">
+        <Icon name="setting"></Icon>
+        <span>添加</span>
       </li>
     </ul>
   </div>
@@ -18,26 +22,19 @@
   @Component
   export default class Tags extends Vue {
     @Prop() readonly tagList!: TagItem[];
+    @Prop() readonly expense!: boolean;
     @Prop() readonly selectedTag!: TagItem;
-    highlight = this.selectedTag;
     toggle(tag: TagItem) {
-      this.highlight= tag;
-      console.log(tag);
-      this.$emit('update:selected-tag', this.highlight);
+      this.$emit('update:selected-tag', tag);
     }
-    // createTag() {
-    //   // this.$router.push('/labels')
-    //   const name = window.prompt('请输入标签名');
-    //   if (name === '') {
-    //     window.alert('标签名不能为空');
-    //   } else if (this.dataSource) {
-    //     this.$emit('update:dataSource', [...this.dataSource, name]);
-    //   }
-    // }
+    add(){
+      this.$router.push('/addtag')
+    }
   }
 </script>
 
 <style scoped lang="scss">
+  @import '~@/assets/styles/helper.scss';
   .tags {
     font-size: 12px;
     padding: 16px;
@@ -62,7 +59,7 @@
         }
         &.selected{
           .icon{
-            background-color: #ffda47;
+            background-color: $color-highlight;
           }
         }
       }

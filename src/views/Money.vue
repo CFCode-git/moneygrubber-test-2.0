@@ -4,7 +4,9 @@
       {{record}}
       <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
       <Notes :value.sync="record.notes"/>
-      <Tags :tag-list.sync="tagList" :selected-tag.sync="record.tag" />
+
+      <Tags v-if="record.type==='-'" :selected-tag.sync="record.tag" :expense="true" :tag-list="expenseTagList" />
+      <Tags v-else-if="record.type==='+'" :selected-tag.sync="record.tag" :tag-list="incomeTagList"/>
       <Types :value.sync="record.type"/>
     </Layout>
   </div>
@@ -18,6 +20,8 @@
   import Tags from '@/components/Money/Tags.vue';
   import Types from '@/components/Money/Types.vue';
   import model from '@/model.ts';
+  import {defaultIncomeTags} from '@/defaultTags';
+  import {defaultExpenseTags} from '@/defaultTags';
 
   const recordList = model.fetch();
 
@@ -25,14 +29,16 @@
     components: {Types, Tags, Notes, NumberPad}
   })
   export default class Money extends Vue {
-    tagList: TagItem[] = [
-      {name: 'food', value: '餐饮'},
-      {name: 'entertainment', value: '娱乐'},
-      {name: 'shopping', value: '购物'}
-    ];
+    expenseTagList: TagItem[] = defaultExpenseTags;
+    incomeTagList: TagItem[] = defaultIncomeTags;
 
     recordList: RecordItem[] = recordList;
-    record: RecordItem = {tag: {name: 'food', value: '餐饮'}, notes: '', type: '-', amount: 0};
+    record: RecordItem = this.initRecord();
+
+    initRecord() {
+      return {tag: {name: 'food', value: '餐饮'}, notes: '', type: '-', amount: 0};
+    }
+
 
     saveRecord() {
       const record2: RecordItem = model.clone(this.record);
@@ -43,6 +49,17 @@
     @Watch('recordList')
     onRecordListonChange() {
       model.save(this.recordList);
+    }
+
+    @Watch('record.type')
+    onRecordTypeChange(type: string) {
+      console.log(this.record.type);
+      console.log(this.record.tag);
+      if (type === '-') {
+        this.record.tag = {name: 'food', value: '餐饮'};
+      } else if (type === '+') {
+        this.record.tag = {name: 'salary', value: '工资'};
+      }
     }
   }
 </script>

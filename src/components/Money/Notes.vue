@@ -3,11 +3,9 @@
     <label class="notes">
       <span class="name">备注</span>
       <input type="text"
-             v-model="notes"
+             :value="value"
+             @input="onNotesChange($event.target.value)"
              placeholder="写点备注吧~">
-      <!--           :value="value"-->
-      <!--           @input="onInput"-->
-      <!--             v-model="notes"-->
     </label>
   </div>
 </template>
@@ -19,14 +17,12 @@
   @Component
   export default class Notes extends Vue {
     @Prop() readonly value!: string;
-    notes = this.value;
     @Watch('notes')
-    onNotesChange(){
-      this.$emit('update:value', this.notes)
+    onNotesChange(value: string){
+      this.$emit('update:value', value)
     }
   }
 </script>
-
 
 <style scoped lang="scss">
   .notes {

@@ -8,46 +8,51 @@
           @click="selectType('+')">收入
       </li>
     </ul>
-    <button class="cancel">取消</button>
+    <button class="cancel" @click="cancel">取消</button>
   </div>
 </template>
 
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Prop} from 'vue-property-decorator';
+
   @Component
   export default class Types extends Vue {
     @Prop() readonly value!: string;
+
     selectType(type: string) {
       if (type !== '+' && type !== '-') {
         throw new Error('this is a wrong type');
       }
-      this.$emit('update:value',type)
+      this.$emit('update:value', type);
+    }
+
+    cancel() {
+      this.$router.push('/statistics');
     }
   }
 </script>
 
 <style scoped lang="scss">
+  @import '~@/assets/styles/helper.scss';
   .types-wrapper {
-    background: #ffda47;
+    background: $color-highlight;
     display: flex;
     justify-content: center;
     position: relative;
 
     .types {
-      background: #ffda47;
+      background: $color-highlight;
       display: flex;
       font-size: 20px;
       /*margin-top:5px;*/
       > li {
         width: 50%;
-        height: 48px;
         display: flex;
         justify-content: center;
         align-items: center;
         position: relative;
-        padding: 20px 20px 10px;
-
+        padding: 15px 20px 5px;
         &.selected::after {
           content: '';
           position: absolute;
@@ -59,6 +64,7 @@
         }
       }
     }
+
     .cancel {
       font-size: 14px;
       position: absolute;
