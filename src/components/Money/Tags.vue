@@ -1,12 +1,13 @@
 <template>
   <div class="tags">
     <div class="new">
-      <button>新增标签</button>
+      <button @click="createTag">新增标签</button>
     </div>
     <ul class="current">
       <li v-for="tag in dataSource" :key="tag"
-          :class="{selected: selectedTags.indexOf(tag)>=0}"
+          :class="{selected: selectedTag === tag}"
           @click="toggle(tag)">{{tag}}
+        <!--        :class="{selected: selectedTags.indexOf(tag)>=0}"-->
       </li>
     </ul>
   </div>
@@ -18,15 +19,41 @@
 
   @Component
   export default class Tags extends Vue {
-    @Prop() dataSource: string[] | undefined;
-    selectedTags: string[] = [];
+    @Prop() readonly dataSource: string[] | undefined;
+    // selectedTags: string[] = [];
+    selectedTag = '衣';
 
     toggle(tag: string) {
-      const index = this.selectedTags.indexOf(tag);
-      if (this.selectedTags.indexOf(tag) >= 0) {
-        this.selectedTags.splice(index, 1);
+      if (this.selectedTag !== '') {
+        this.selectedTag = '';
       } else {
-        this.selectedTags.push(tag);
+        this.selectedTag = tag;
+      }
+      this.selectedTag = tag;
+      // console.log(tag);
+      this.$emit('update:value', this.selectedTag);
+    }
+
+    // toggle2(tag: string) {
+    //   const index = this.selectedTags.indexOf(tag);
+    //   if (this.selectedTags.length > 0) {
+    //     this.selectedTags = [];
+    //   }
+    //   if (this.selectedTags.indexOf(tag) >= 0) {
+    //     this.selectedTags.splice(index, 1);
+    //   } else {
+    //     this.selectedTags.push(tag);
+    //   }
+    //   this.$emit('update:value', this.selectedTags);
+    // }
+
+    createTag() {
+      // this.$router.push('/labels')
+      const name = window.prompt('请输入标签名');
+      if (name === '') {
+        window.alert('标签名不能为空');
+      } else if (this.dataSource) {
+        this.$emit('update:dataSource', [...this.dataSource, name]);
       }
     }
   }

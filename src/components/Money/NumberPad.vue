@@ -17,7 +17,7 @@
       <button @click="inputContent">7</button>
       <button @click="inputContent">8</button>
       <button @click="inputContent">9</button>
-      <button>
+      <button @click="clear">
         <Icon name="clear"/>
       </button>
       <button @click="inputContent">.</button>
@@ -25,7 +25,7 @@
       <button @click="backspace">
         <Icon name="backspace"/>
       </button>
-      <button>
+      <button @click="ok">
         <Icon name="tick"/>
       </button>
     </div>
@@ -34,11 +34,12 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component} from 'vue-property-decorator';
+  import {Component, Prop} from 'vue-property-decorator';
 
   @Component
   export default class NumberPad extends Vue {
-    output = '0';
+    @Prop() readonly value!: number
+    output = this.value.toString();
 
     inputContent(event: MouseEvent) {
       const button = event.target as HTMLButtonElement;
@@ -141,6 +142,13 @@
       this.handleMinusAndAdd('-');
     }
 
+    clear(){
+      this.output = '0';
+    }
+
+    ok(){
+      this.$emit('update:value',parseFloat(this.output))
+    }
   }
 </script>
 <style scoped lang="scss">
