@@ -38,7 +38,7 @@
 
   @Component
   export default class NumberPad extends Vue {
-    @Prop() readonly value!: number
+    @Prop() readonly value!: number;
     output = this.value.toString();
 
     inputContent(event: MouseEvent) {
@@ -114,11 +114,11 @@
         } else if (this.output.indexOf('-') >= 0) {
           const item = this.output.split('-');
           console.log(item);
-          console.log(item.length)
-          if(item.length>2){
+          console.log(item.length);
+          if (item.length > 2) {
             result = (-1 * parseFloat(item[1])) - parseFloat(item[2]);
-          }else{
-            result =  parseFloat(item[0]) - parseFloat(item[1]);
+          } else {
+            result = parseFloat(item[0]) - parseFloat(item[1]);
           }
           // result = result.toFixed(2);
           this.output = result.toString() + input;
@@ -142,12 +142,14 @@
       this.handleMinusAndAdd('-');
     }
 
-    clear(){
+    clear() {
       this.output = '0';
     }
 
-    ok(){
-      this.$emit('update:value',parseFloat(this.output))
+    ok() {
+      this.$emit('update:value', parseFloat(this.output));
+      this.$emit('submit', parseFloat(this.output));
+      this.clear();
     }
   }
 </script>

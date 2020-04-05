@@ -20,8 +20,9 @@
   @Component
   export default class Tags extends Vue {
     @Prop() readonly dataSource: string[] | undefined;
+    @Prop() readonly value!: string
     // selectedTags: string[] = [];
-    selectedTag = '衣';
+    selectedTag = this.value;
 
     toggle(tag: string) {
       if (this.selectedTag !== '') {

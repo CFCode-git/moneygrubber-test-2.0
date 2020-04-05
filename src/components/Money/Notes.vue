@@ -3,27 +3,27 @@
     <label class="notes">
       <span class="name">备注</span>
       <input type="text"
-             v-model="value"
+             v-model="notes"
              placeholder="写点备注吧~">
       <!--           :value="value"-->
       <!--           @input="onInput"-->
+      <!--             v-model="notes"-->
     </label>
   </div>
 </template>
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component, Watch} from 'vue-property-decorator';
+  import {Component, Prop, Watch} from 'vue-property-decorator';
 
   @Component
   export default class Notes extends Vue {
-    value = '';
-
-    @Watch('value')
-    onValueChanged(value: string, oldValue: string) {
-      this.$emit('update:value', value);
+    @Prop() readonly value!: string;
+    notes = this.value;
+    @Watch('notes')
+    onNotesChange(){
+      this.$emit('update:value', this.notes)
     }
-
   }
 </script>
 
