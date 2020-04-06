@@ -51,7 +51,7 @@ const defaultShoppingTags = [
   {name: 'digitalProducts', value: '数码'},
   {name: 'furniture', value: '家居电器'},
   {name: 'cosmetics', value: '化妆品'},
-  {name: 'cigarette', value: '烟酒'}
+  {name: 'cigarettes', value: '烟酒'}
 ];
 const defaultSocietyTags = [
   {name: 'social', value: '社交'},

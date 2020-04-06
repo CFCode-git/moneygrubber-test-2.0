@@ -1,21 +1,25 @@
 <template>
   <div class="tag">
     <div class="header">
-      <Icon name="left"/>
+      <button @click="back" class="back">
+        <Icon name="left"/>
+      </button>
       <span>添加支出类别</span>
-      <button class="ok">完成</button>
+      <button class="ok" @click="ok">完成</button>
     </div>
     <div class="select">
-      <Icon name="food"/>
-      <span>餐饮</span>
+      <Icon :name="selectedTag.name"/>
+      <span>{{selectedTag.value}}</span>
     </div>
     <div class="contents">
       <div class="content">
         <div class="caption">
-          餐饮
+          饮食
         </div>
         <ul class="tags">
-          <li v-for="tag in foodTags" :key="tag.name">
+          <li v-for="tag in foodTags" :key="tag.name"
+              @click="toggle(tag)"
+              :class="{selected: selectedTag.name===tag.name }">
             <Icon :name="tag.name"/>
             <span>{{tag.value}}</span>
           </li>
@@ -23,10 +27,12 @@
       </div>
       <div class="content">
         <div class="caption">
-          餐饮
+          生活
         </div>
         <ul class="tags">
-          <li v-for="tag in foodTags" :key="tag.name">
+          <li v-for="tag in homeTags" :key="tag.name"
+              @click="toggle(tag)"
+              :class="{selected: selectedTag.name===tag.name}">
             <Icon :name="tag.name"/>
             <span>{{tag.value}}</span>
           </li>
@@ -34,10 +40,12 @@
       </div>
       <div class="content">
         <div class="caption">
-          餐饮
+          购物
         </div>
         <ul class="tags">
-          <li v-for="tag in foodTags" :key="tag.name">
+          <li v-for="tag in shoppingTags" :key="tag.name"
+              @click="toggle(tag)"
+              :class="{selected: selectedTag.name===tag.name}">
             <Icon :name="tag.name"/>
             <span>{{tag.value}}</span>
           </li>
@@ -45,10 +53,12 @@
       </div>
       <div class="content">
         <div class="caption">
-          餐饮
+          娱乐
         </div>
         <ul class="tags">
-          <li v-for="tag in foodTags" :key="tag.name">
+          <li v-for="tag in entertainmentTags" :key="tag.name"
+              @click="toggle(tag)"
+              :class="{selected: selectedTag.name===tag.name}">
             <Icon :name="tag.name"/>
             <span>{{tag.value}}</span>
           </li>
@@ -56,10 +66,12 @@
       </div>
       <div class="content">
         <div class="caption">
-          餐饮
+          交通
         </div>
         <ul class="tags">
-          <li v-for="tag in foodTags" :key="tag.name">
+          <li v-for="tag in trafficTags" :key="tag.name"
+              @click="toggle(tag)"
+              :class="{selected: selectedTag.name === tag.name}">
             <Icon :name="tag.name"/>
             <span>{{tag.value}}</span>
           </li>
@@ -67,10 +79,12 @@
       </div>
       <div class="content">
         <div class="caption">
-          餐饮
+          社交
         </div>
         <ul class="tags">
-          <li v-for="tag in foodTags" :key="tag.name">
+          <li v-for="tag in societyTags" :key="tag.name"
+              @click="toggle(tag)"
+              :class="{selected: selectedTag.name===tag.name}">
             <Icon :name="tag.name"/>
             <span>{{tag.value}}</span>
           </li>
@@ -78,32 +92,12 @@
       </div>
       <div class="content">
         <div class="caption">
-          餐饮
+          其他
         </div>
         <ul class="tags">
-          <li v-for="tag in foodTags" :key="tag.name">
-            <Icon :name="tag.name"/>
-            <span>{{tag.value}}</span>
-          </li>
-        </ul>
-      </div>
-      <div class="content">
-        <div class="caption">
-          餐饮
-        </div>
-        <ul class="tags">
-          <li v-for="tag in foodTags" :key="tag.name">
-            <Icon :name="tag.name"/>
-            <span>{{tag.value}}</span>
-          </li>
-        </ul>
-      </div>
-      <div class="content">
-        <div class="caption">
-          餐饮
-        </div>
-        <ul class="tags">
-          <li v-for="tag in foodTags" :key="tag.name">
+          <li v-for="tag in otherTags" :key="tag.name"
+              @click="toggle(tag)"
+              :class="{selected: selectedTag.name===tag.name}">
             <Icon :name="tag.name"/>
             <span>{{tag.value}}</span>
           </li>
@@ -137,6 +131,20 @@
     entertainmentTags = defaultEntertainmentTags;
     societyTags = defaultSocietyTags;
     otherTags = defaultOtherTags;
+
+    selectedTag: TagItem = {name: 'food', value: '餐饮'};
+
+    toggle(tag: TagItem) {
+      this.selectedTag = tag;
+    }
+
+    back() {
+      this.$router.push('/money');
+    }
+
+    ok() {
+      this.$router.push('/money');
+    }
   }
 </script>
 
@@ -145,9 +153,10 @@
 
   .tag {
     margin-bottom: 30px;
-    height:100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+
     .header {
       display: flex;
       justify-content: space-between;
@@ -158,6 +167,11 @@
 
       > .ok {
         font-size: 14px;
+        border: 0;
+        background-color: transparent;
+      }
+
+      > .back {
         border: 0;
         background-color: transparent;
       }
@@ -178,14 +192,16 @@
         border-radius: 50%;
       }
     }
-    .contents{
+
+    .contents {
       overflow: auto;
       /*display: flex;*/
       /*flex-direction: column;*/
       padding: 20px 8px 0 8px;
+
       .content {
         font-size: 18px;
-        /*padding: 20px 8px 0px 8px;*/
+        padding: 8px 0;
 
         .caption {
           text-align: center;
@@ -202,7 +218,7 @@
             display: flex;
             align-items: center;
             flex-direction: column;
-            padding: 8px 10px;
+            padding: 10px 0;
 
             .icon {
               height: 40px;
@@ -210,6 +226,16 @@
               background-color: #e8e8e8;
               padding: 5px;
               border-radius: 50%;
+            }
+
+            > span {
+              padding-top: 5px;
+            }
+
+            &.selected {
+              .icon {
+                background-color: $color-highlight;
+              }
             }
           }
         }

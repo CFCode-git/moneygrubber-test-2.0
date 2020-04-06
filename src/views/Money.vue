@@ -5,7 +5,7 @@
       <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
       <Notes :value.sync="record.notes"/>
 
-      <Tags v-if="record.type==='-'" :selected-tag.sync="record.tag" :expense="true" :tag-list="expenseTagList" />
+      <Tags v-if="record.type==='-'" :selected-tag.sync="record.tag" :expense="true" :tag-list="expenseTagList"/>
       <Tags v-else-if="record.type==='+'" :selected-tag.sync="record.tag" :tag-list="incomeTagList"/>
       <Types :value.sync="record.type"/>
     </Layout>
@@ -41,20 +41,11 @@
 
 
     saveRecord() {
-      const record2: RecordItem = model.clone(this.record);
-      record2.createdAt = new Date();
-      this.recordList.push(record2);
-    }
-
-    @Watch('recordList')
-    onRecordListonChange() {
-      model.save(this.recordList);
+      this.$store.commit('createRecord', this.record);
     }
 
     @Watch('record.type')
     onRecordTypeChange(type: string) {
-      console.log(this.record.type);
-      console.log(this.record.tag);
       if (type === '-') {
         this.record.tag = {name: 'food', value: '餐饮'};
       } else if (type === '+') {
