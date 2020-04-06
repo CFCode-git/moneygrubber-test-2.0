@@ -26,14 +26,21 @@
   const recordList = model.fetch();
 
   @Component({
-    components: {Types, Tags, Notes, NumberPad}
+    components: {Types, Tags, Notes, NumberPad},
+    computed: {
+      recordList() {
+        return this.$store.state.recordList;
+      }
+    }
   })
   export default class Money extends Vue {
     expenseTagList: TagItem[] = defaultExpenseTags;
     incomeTagList: TagItem[] = defaultIncomeTags;
-
-    recordList: RecordItem[] = recordList;
     record: RecordItem = this.initRecord();
+
+    created(){
+      this.$store.commit('fetchRecordList')
+    }
 
     initRecord() {
       return {tag: {name: 'food', value: '餐饮'}, notes: '', type: '-', amount: 0};
