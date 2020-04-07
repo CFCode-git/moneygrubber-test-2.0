@@ -15,4 +15,10 @@ type RootState = {
   recordList: RecordItem[];
   tagList: TagItem[];
 }
+
 type HashTableValue = { title: string; items: RecordItem[] }
+
+type groupedList = {
+  title: string;
+  items: RecordItem[];
+}

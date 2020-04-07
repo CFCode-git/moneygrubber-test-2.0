@@ -38,13 +38,20 @@
         </header>
 
         <ol class="records">
-          <li v-for="group in result" :key="group.title">
-            <h3>{{group.title}}</h3><span>{{toWeek(group.title)}}</span>
-            <span>{{capitalFlow(group)}}</span>
-            <!--&lt;!&ndash;            group传给一个函数&ndash;&gt; 得到week 支出收入-->
+          <li v-for="(group,index) in groupedList" :key="index">
+            <div class="recordTitle">
+              <span>{{toDate(group)}}</span>
+              <span>{{toWeek(group)}}</span>
+              <span>支出：{{capitalFlow(group)[0]}}</span>
+              <span>收入：{{capitalFlow(group)[1]}}</span>
+            </div>
             <ol>
               <li v-for="item in group.items" :key="item.id">
-                {{item.tag}}{{item.amount}}{{item.createdAt}}
+                <div>
+                  <Icon :name="item.tag.name"/>
+                  <span>{{item.tag.value}}</span>
+                </div>
+                <span>{{item.amount}}</span>
               </li>
             </ol>
           </li>
@@ -60,6 +67,16 @@
   import {Component, Watch} from 'vue-property-decorator';
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';
+  import {
+    defaultEntertainmentTags,
+    defaultFoodTags,
+    defaultHomeTags,
+    defaultShoppingTags,
+    defaultSocietyTags,
+    defaultOtherTags,
+    defaultTrafficTags
+  } from '@/defaultTags';
+
 
 
   @Component({})
@@ -135,18 +152,29 @@
       return amount;
     }
 
-    get result() {
+    // 排序 分组
+    get groupedList() {
       const {currentRecordList} = this;
-      // const hashTable: {title: string,items: RecordItem[]}[]
+      if (currentRecordList.length === 0) {
+        return [];
+      }
       // 由于有sort改变了原来的数组可能会影响依赖于currentRecordList的内容，因此做一个深克隆
-      const newList = clone(currentRecordList).sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
-      console.log(newList);
-      return []
+      const newList = clone(currentRecordList).sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
+      const result = [{title: dayjs(newList[0].createdAt).format('YYYY-MM-DD'), items: [newList[0]]}];
+      for (let i = 1; i < newList.length; i++) {
+        const current = newList[i];
+        const last = result[result.length - 1];
+        if (dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {
+          last.items.push(current);
+        } else {
+          result.push({title: dayjs(current.createdAt).format('YYYY-MM-DD'), items: [current]});
+        }
+      }
+      return result;
     }
 
     // 计算每日支出收入 资金流
     capitalFlow(group: HashTableValue) {
-      // console.log(group);
       let expenseAmount = 0;
       let incomeAmount = 0;
       for (let i = 0; i < group.items.length; i++) {
@@ -156,10 +184,17 @@
           incomeAmount += group.items[i].amount;
         }
       }
-      return {expenseAmount,incomeAmount};
+      return [expenseAmount, incomeAmount];
     }
 
-    toWeek(value: number) {
+    toDate(group: groupedList){
+      return dayjs(group.items[0].createdAt).format('MM月DD日')
+    }
+
+
+
+    toWeek(group: groupedList) {
+      const value = +dayjs(group.items[0].createdAt).format('d');
       return [
         '周日',
         '周一',
