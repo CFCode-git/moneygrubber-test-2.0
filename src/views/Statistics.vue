@@ -67,15 +67,6 @@
   import {Component, Watch} from 'vue-property-decorator';
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';
-  import {
-    defaultEntertainmentTags,
-    defaultFoodTags,
-    defaultHomeTags,
-    defaultShoppingTags,
-    defaultSocietyTags,
-    defaultOtherTags,
-    defaultTrafficTags
-  } from '@/defaultTags';
 
 
 

@@ -184,13 +184,14 @@
       // console.log(result)
       if(result === 0){
         window.alert('记账金额为零哦')
+        return;
       }else if(result < 0){
         window.alert('怎么能记录负数呢')
         this.clear()
+        return;
       }else{
         this.$emit('update:value', parseFloat(this.output));
         this.$emit('submit', parseFloat(this.output));
-        // console.log(result)
         this.clear();
       }
 
