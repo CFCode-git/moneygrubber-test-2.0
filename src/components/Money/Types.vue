@@ -1,14 +1,16 @@
 <template>
   <div class="types-wrapper">
     <ul class="types">
-      <li :class="value==='-'&& 'selected'"
+      <li :class="{[classPrefix+'-item']:classPrefix,
+        selected:value==='-'}"
           @click="selectType('-')">支出
       </li>
-      <li :class="value==='+'&& 'selected'"
+      <li :class="{[classPrefix+'-item']:classPrefix,
+        selected:value==='+'}"
           @click="selectType('+')">收入
       </li>
     </ul>
-    <button class="cancel" @click="cancel">取消</button>
+    <button v-if="cancelButton" class="cancel" @click="cancel">取消</button>
   </div>
 </template>
 
@@ -19,6 +21,8 @@
   @Component
   export default class Types extends Vue {
     @Prop() readonly value!: string;
+    @Prop() readonly classPrefix?: string;
+    @Prop() readonly cancelButton?: boolean;
 
     selectType(type: string) {
       if (type !== '+' && type !== '-') {
@@ -52,7 +56,7 @@
         justify-content: center;
         align-items: center;
         position: relative;
-        padding: 15px 20px 5px;
+
         &.selected::after {
           content: '';
           position: absolute;

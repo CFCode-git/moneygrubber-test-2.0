@@ -35,6 +35,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Prop} from 'vue-property-decorator';
+  import {parse} from '@typescript-eslint/parser';
 
   @Component
   export default class NumberPad extends Vue {
@@ -70,7 +71,7 @@
         return;
       }
       if (this.output.indexOf('+') < 0 && this.output.indexOf('-') < 0) {
-        console.log(1);
+        // console.log(1);
         if (this.output.indexOf('.') >= 0) {return;}
       } else {
         if (this.output.indexOf('+') >= 0) {
@@ -113,8 +114,8 @@
           this.output = result.toString() + input;
         } else if (this.output.indexOf('-') >= 0) {
           const item = this.output.split('-');
-          console.log(item);
-          console.log(item.length);
+          // console.log(item);
+          // console.log(item.length);
           if (item.length > 2) {
             result = (-1 * parseFloat(item[1])) - parseFloat(item[2]);
           } else {
@@ -146,10 +147,53 @@
       this.output = '0';
     }
 
+    outputChecker() {
+      let result = parseFloat(this.output);
+      if (this.output.indexOf('+') >= 0 && this.output.indexOf('-') < 0) {
+        const item = this.output.split('+');
+        result = item [1] ?
+          parseFloat(item[0]) + parseFloat(item[1]) :
+          parseFloat(item[0]);
+      } else if (this.output.indexOf('-') >= 0) {
+        const item = this.output.split('-');
+        // console.log(item);
+        if (item.length===3) {
+          // window.alert('怎么能记录负数呢');
+          this.clear();
+        } else if(item.length===2){
+          if(item[0]!==''&& item[1]!==''){
+            result = parseFloat(item[0]) - parseFloat(item[1]);
+          }else if(item[0]===''){
+            const count = item[1].split('+');
+            if(count[1]===''){
+              // window.alert('怎么能记录负数呢');
+              this.clear();
+            }else{
+              result = parseFloat(count[1]) - parseFloat(count[0]);
+            }
+          }else if(item[1]===''){
+            result =  parseFloat(item[0]);
+          }
+        }
+      }
+      return result;
+    }
+
     ok() {
-      this.$emit('update:value', parseFloat(this.output));
-      this.$emit('submit', parseFloat(this.output));
-      this.clear();
+      const result = this.outputChecker();
+      // console.log(result)
+      if(result === 0){
+        window.alert('记账金额为零哦')
+      }else if(result < 0){
+        window.alert('怎么能记录负数呢')
+        this.clear()
+      }else{
+        this.$emit('update:value', parseFloat(this.output));
+        this.$emit('submit', parseFloat(this.output));
+        // console.log(result)
+        this.clear();
+      }
+
     }
   }
 </script>
@@ -160,11 +204,11 @@
     .output {
       @extend %clearFix;
       @extend %innerShadow;
-      font-size: 36px;
+      font-size: 32px;
       font-family: Consolas, monospace;
-      padding: 9px 16px;
+      padding: 0 16px;
       text-align: right;
-      height: 72px;
+      height: 48px;
     }
 
     .buttons {
@@ -172,7 +216,7 @@
 
       > button {
         width: 25%;
-        height: 64px;
+        height: 56px;
         float: left;
         background: transparent;
         border: none;

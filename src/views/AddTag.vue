@@ -5,7 +5,7 @@
         <Icon name="left"/>
       </button>
       <span>添加支出类别</span>
-      <button class="ok" @click="ok">完成</button>
+      <button class="ok" @click="ok">添加</button>
     </div>
     <div class="select">
       <Icon :name="selectedTag.name"/>
@@ -143,6 +143,7 @@
     }
 
     ok() {
+      this.$store.commit('addTag', this.selectedTag);
       this.$router.push('/money');
     }
   }

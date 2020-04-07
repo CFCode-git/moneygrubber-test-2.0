@@ -37,7 +37,7 @@
     }
 
     input {
-      height: 64px;
+      height: 40px;
       flex-grow: 1;
       background: transparent;
       border: none;

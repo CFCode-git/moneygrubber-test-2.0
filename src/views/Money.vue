@@ -1,13 +1,13 @@
 <template>
   <div>
     <Layout class-prefix="layout">
-      {{record}}
+      <!--      {{record}}-->
       <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
       <Notes :value.sync="record.notes"/>
 
       <Tags v-if="record.type==='-'" :selected-tag.sync="record.tag" :expense="true" :tag-list="expenseTagList"/>
       <Tags v-else-if="record.type==='+'" :selected-tag.sync="record.tag" :tag-list="incomeTagList"/>
-      <Types :value.sync="record.type"/>
+      <Types :value.sync="record.type" class-prefix="money" :cancelButton="true"/>
     </Layout>
   </div>
 </template>
@@ -23,23 +23,26 @@
   import {defaultIncomeTags} from '@/defaultTags';
   import {defaultExpenseTags} from '@/defaultTags';
 
-  const recordList = model.fetch();
+  // const recordList = model.fetch();
 
   @Component({
     components: {Types, Tags, Notes, NumberPad},
-    computed: {
-      recordList() {
-        return this.$store.state.recordList;
-      }
-    }
   })
   export default class Money extends Vue {
-    expenseTagList: TagItem[] = defaultExpenseTags;
     incomeTagList: TagItem[] = defaultIncomeTags;
     record: RecordItem = this.initRecord();
 
-    created(){
-      this.$store.commit('fetchRecordList')
+    get recordList() {
+      return this.$store.state.recordList;
+    }
+
+    get expenseTagList() {
+      return this.$store.state.tagList;
+    }
+
+    created() {
+      this.$store.commit('fetchRecordList');
+      this.$store.commit('fetchTagList');
     }
 
     initRecord() {
@@ -68,4 +71,8 @@
     flex-direction: column-reverse;
   }
 </style>
-
+<style lang="scss" scoped>
+  ::v-deep .money-item {
+    padding: 15px 20px 5px;
+  }
+</style>

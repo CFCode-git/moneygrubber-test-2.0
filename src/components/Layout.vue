@@ -3,13 +3,15 @@
     <div class="content" :class="classPrefix && `${classPrefix}-content`">
       <slot/>
     </div>
-    <Nav/>
+    <div v-if="money">
+      <Nav/>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
   export default {
-    props: ['classPrefix'],
+    props: ['classPrefix','money'],
     name: 'Layout'
   };
 </script>
