@@ -9,14 +9,14 @@
           <div class="table">
             <div class="datePicker">
               <div>
-                <select v-model="year" class="year">
+                <select v-model="year" class="year" name="year" id="year">
                   <option v-for="item in yearList" :key="item" :value="item">
                     {{item}}年
                   </option>
                 </select>
               </div>
               <div class="month-wrapper">
-                <select v-model="month" class="month">
+                <select v-model="month" class="month" name="month" id="month">
                   <option v-for="item in monthList" :key="item" :value="item">
                     {{monthFormat(item)}}
                   </option>
@@ -27,11 +27,17 @@
             <div class="amount">
               <div class="expense">
                 <div class="title">支出</div>
-                <div class="number">{{expenseAmount}}</div>
+                <div class="number">
+                  <span>{{handleAmount(expenseAmount)[0]}}</span>
+                  <span class="small">.{{handleAmount(expenseAmount)[1]}}</span>
+                </div>
               </div>
               <div class="income">
                 <div class="title">收入</div>
-                <div class="number">{{incomeAmount}}</div>
+                <div class="number">
+                  <span>{{handleAmount(incomeAmount)[0]}}</span>
+                  <span class="small">.{{handleAmount(incomeAmount)[1]}}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -40,20 +46,27 @@
         <ol class="records">
           <li v-for="(group,index) in groupedList" :key="index">
             <div class="recordTitle">
-              <span>{{toDate(group)}}</span>
-              <span>{{toWeek(group)}}</span>
-              <span>支出：{{capitalFlow(group)[0]}}</span>
-              <span>收入：{{capitalFlow(group)[1]}}</span>
+              <div class="date">
+                <span>{{toDate(group)}}</span>
+                <span>{{toWeek(group)}}</span>
+              </div>
+              <div class="detail">
+                <span>支出：{{capitalFlow(group)[0]}}</span>
+                <span>收入：{{capitalFlow(group)[1]}}</span>
+              </div>
             </div>
-            <ol>
-              <li v-for="item in group.items" :key="item.id" @click="editRecord(item)">
-                <div>
+            <div>
+              <router-link class="recordList"
+                           v-for="item in group.items" :key="item.id"
+                           :to="`/record/edit/${item.id}`"
+              >
+                <div class="recordTag">
                   <Icon :name="item.tag.name"/>
                   <span>{{item.tag.value}}</span>
                 </div>
-                <span>{{item.amount}}</span>
-              </li>
-            </ol>
+                <span class="recordAmount">{{item.amount}}</span>
+              </router-link>
+            </div>
           </li>
         </ol>
 
@@ -67,7 +80,6 @@
   import {Component, Watch} from 'vue-property-decorator';
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';
-
 
   @Component({})
   export default class Statistics extends Vue {
@@ -127,7 +139,8 @@
       for (let i = 0; i < expenseList.length; i++) {
         amount += expenseList[i].amount;
       }
-      return amount;
+      return amount.toFixed(2);
+      // return amount.toFixed(2);
     }
 
     // 当月总支出
@@ -139,8 +152,16 @@
       for (let i = 0; i < expenseList.length; i++) {
         amount += expenseList[i].amount;
       }
-      return amount;
+      return amount.toFixed(2);
+      // return amount.toFixed(2);
     }
+
+    // 分离总支出/收入的小数
+    handleAmount(amount: number) {
+      const item = amount.toString().split('.');
+      return item;
+    }
+
 
     // newList排序 result分组
     get groupedList() {
@@ -196,21 +217,13 @@
       ][value];
     }
 
-    editRecord(item: RecordItem) {
-      console.log(item);
-      console.log(item.id);
-      this.$router.push(`/record/edit/${item.id}`) || console.log('id not found');
-    }
-
     @Watch('year')
     changeYear(year: string) {
-      console.log(typeof year);
       window.sessionStorage.setItem('year', year);
     }
 
     @Watch('month')
     changeMonth(month: string) {
-      console.log(typeof month);
       window.sessionStorage.setItem('month', month);
     }
   }
@@ -276,7 +289,9 @@
             border: none;
             outline: none;
             background-color: inherit;
+            appearance: none;
             -webkit-appearance: none;
+            -moz-appearance: none;
             color: #b29635;
           }
 
@@ -285,7 +300,9 @@
             border: none;
             outline: none;
             background-color: inherit;
+            appearance: none;
             -webkit-appearance: none;
+            -moz-appearance: none;
             font-size: 24px;
 
             > span {
@@ -310,6 +327,10 @@
 
             .number {
               font-size: 20px;
+
+              > .small {
+                font-size: 15px;
+              }
             }
           }
 
@@ -333,6 +354,55 @@
       flex-grow: 1;
       overflow: auto;
       padding: 16px;
+
+      .recordTitle {
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #ccc;
+        color: #888;
+
+        .date {
+          span:first-child {
+            padding-right: 4px;
+          }
+        }
+
+        .detail {
+          span:last-child {
+            padding-left: 4px;
+          }
+        }
+      }
+
+      .recordList {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        color: #555;
+
+        .recordTag {
+          padding: 2px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .icon {
+            background-color: $color-highlight;
+            width: 28px;
+            height: 28px;
+            padding: 4px;
+            border-radius: 50%;
+          }
+
+          > span {
+            padding-left: 8px;
+          }
+        }
+      }
+
     }
   }
 </style>

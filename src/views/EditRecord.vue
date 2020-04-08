@@ -16,23 +16,29 @@
     <main class="content">
       <div class="option">
         <span>类型：</span>
-        <input type="text" disabled :value="record.type">
+        <input type="text" disabled :value="outputType(record.type)">
       </div>
       <div class="option">
         <span>金额：</span>
-        <input type="text" :value="record.amount">
+        <input type="text"
+               v-model="record.amount">
       </div>
       <div class="option">
-        <span>日期：</span>
-        <input type="text" :value="record.createdAt">
+        <DatePicker :original-time="record.createdAt"
+                    @update:year="updateYear"
+                    @update:month="updateMonth"
+                    @update:date="updateDate"
+        />
+        <!--        <span>{{week}}</span>-->
       </div>
       <div class="option">
         <span>备注：</span>
-        <input type="text" :value="record.notes">
+        <input type="text" v-model="record.notes">
       </div>
     </main>
     <footer class="footer">
-      <button class="ok">编辑完成</button>
+
+      <button class="ok" @click="ok">编辑完成</button>
     </footer>
   </div>
 
@@ -41,29 +47,71 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
+  import dayjs from 'dayjs';
+  // var isLeapYear = require('dayjs/plugin/isLeapYear');
+  import isLeapYear from 'dayjs/plugin/isLeapYear.js';
+  import DatePicker from '@/components/EditRecord/DatePicker.vue';
 
-  @Component
+  dayjs.extend(isLeapYear);
+  @Component({
+    components: {DatePicker}
+  })
   export default class EditRecord extends Vue {
-    record?: RecordItem = undefined;
+    record?: RecordItem;
+
     beforeCreate() {
       this.$store.commit('fetchRecordList');
     }
-    get recordList() {
-      return (this.$store.state as RootState).recordList;
-    }
+
     created() {
       const id = this.$route.params.id;
       const record = this.recordList.filter(t => t.id === id)[0];
       if (record) {
         this.record = record;
-        console.log(record);
       } else {
-        this.$router.push('/404');
+        this.$router.replace('/404');
       }
     }
-    goBack(){
-      this.$router.push('/statistics')
+
+    get recordList() {
+      return (this.$store.state as RootState).recordList;
     }
+
+    updateYear(year: number) {
+      if (this.record) {
+        this.record.createdAt = dayjs(this.record.createdAt).year(year).toDate().toISOString();
+      }
+    }
+
+    updateMonth(month: number) {
+      if (this.record) {
+        this.record.createdAt = dayjs(this.record.createdAt).month(month).toDate().toISOString();
+      }
+    }
+
+    updateDate(date: number) {
+      if (this.record) {
+        this.record.createdAt = dayjs(this.record.createdAt).date(date).toDate().toISOString();
+      }
+    }
+
+    goBack() {
+      this.$router.push('/statistics');
+    }
+
+    outputType(type: string) {
+      if (type === '-') {
+        return '支出';
+      } else if (type === '+') {
+        return '收入';
+      }
+    }
+
+    ok() {
+      this.$store.commit('updateRecord', this.record);
+      this.$router.push('/statistics');
+    }
+
   }
 </script>
 
@@ -75,7 +123,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    /*padding:0 8px;*/
+
     .header {
       display: flex;
       justify-content: center;
@@ -87,19 +135,21 @@
 
       .goBack {
         position: absolute;
-        top:50%;
-        left:0;
+        top: 50%;
+        left: 0;
         transform: translateY(-50%);
-        padding-left:8px;
+        padding-left: 8px;
         display: flex;
         justify-content: center;
         align-items: center;
+
         > .left {
           padding-left: 4px;
         }
-        > .icon{
-          width:24px;
-          height:24px;
+
+        > .icon {
+          width: 24px;
+          height: 24px;
         }
 
         .left {
@@ -133,45 +183,48 @@
       button {
         background-color: #f60;
         border: #f60;
-        color:#f5f5f5;
+        color: #f5f5f5;
         border-radius: 4px;
         position: absolute;
-        top:50%;
-        right:0;
+        top: 50%;
+        right: 0;
         transform: translateY(-50%);
-        padding:4px 8px;
+        padding: 4px 8px;
         margin-right: 8px;
       }
     }
+
     .content {
       flex-grow: 1;
       /*width:100%;*/
-      padding:8px;
+      padding: 8px;
       width: 100%;
-      .option{
-        border-bottom:1px solid #ccc;
-        padding:4px;
-        > span{
+
+      .option {
+        border-bottom: 1px solid #ccc;
+        padding: 4px;
+
+        > span {
           padding-right: 4px;
         }
-        > input{
-          border:none;
+
+        > input {
+          border: none;
           background-color: transparent;
-          padding:8px 0;
+          padding: 8px 0;
         }
       }
-      .amount{}
-      .date{}
-      .notes{}
     }
+
     .footer {
-        width:100%;
+      width: 100%;
+
       button {
         @extend %outerShadow;
-        width:100%;
-        border:none;
+        width: 100%;
+        border: none;
         background-color: #fff;
-        padding:8px 0;
+        padding: 8px 0;
         letter-spacing: .1rem;
       }
     }
