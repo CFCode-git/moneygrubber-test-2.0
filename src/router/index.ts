@@ -32,7 +32,7 @@ const routes = [
     component: Statistics
   },
   {
-    path: '/record/edit',
+    path: '/record/edit/:id',
     component: EditRecord
   },
   {

@@ -19,9 +19,7 @@
   import Notes from '@/components/Money/Notes.vue';
   import Tags from '@/components/Money/Tags.vue';
   import Types from '@/components/Money/Types.vue';
-  import model from '@/model.ts';
   import {defaultIncomeTags} from '@/defaultTags';
-  import {defaultExpenseTags} from '@/defaultTags';
 
   // const recordList = model.fetch();
 
@@ -30,7 +28,7 @@
   })
   export default class Money extends Vue {
     incomeTagList: TagItem[] = defaultIncomeTags;
-    record: RecordItem = this.initRecord();
+    record  = this.initRecord();
 
     get recordList() {
       return this.$store.state.recordList;

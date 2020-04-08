@@ -46,7 +46,7 @@
               <span>收入：{{capitalFlow(group)[1]}}</span>
             </div>
             <ol>
-              <li v-for="item in group.items" :key="item.id">
+              <li v-for="item in group.items" :key="item.id" @click="editRecord(item)">
                 <div>
                   <Icon :name="item.tag.name"/>
                   <span>{{item.tag.value}}</span>
@@ -67,7 +67,6 @@
   import {Component, Watch} from 'vue-property-decorator';
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';
-
 
 
   @Component({})
@@ -143,7 +142,7 @@
       return amount;
     }
 
-    // 排序 分组
+    // newList排序 result分组
     get groupedList() {
       const {currentRecordList} = this;
       if (currentRecordList.length === 0) {
@@ -178,12 +177,12 @@
       return [expenseAmount, incomeAmount];
     }
 
-    toDate(group: groupedList){
-      return dayjs(group.items[0].createdAt).format('MM月DD日')
+    // createdAt 转化 为 日期
+    toDate(group: groupedList) {
+      return dayjs(group.items[0].createdAt).format('MM月DD日');
     }
 
-
-
+    // 日期转化为星期
     toWeek(group: groupedList) {
       const value = +dayjs(group.items[0].createdAt).format('d');
       return [
@@ -197,6 +196,12 @@
       ][value];
     }
 
+    editRecord(item: RecordItem) {
+      console.log(item);
+      console.log(item.id);
+      this.$router.push(`/record/edit/${item.id}`) || console.log('id not found');
+    }
+
     @Watch('year')
     changeYear(year: string) {
       console.log(typeof year);
@@ -208,7 +213,6 @@
       console.log(typeof month);
       window.sessionStorage.setItem('month', month);
     }
-
   }
 </script>
 
