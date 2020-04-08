@@ -64,7 +64,7 @@
                   <Icon :name="item.tag.name"/>
                   <span>{{item.tag.value}}</span>
                 </div>
-                <span class="recordAmount">{{item.amount}}</span>
+                <span class="recordAmount">{{handleType(item)}}</span>
               </router-link>
             </div>
           </li>
@@ -103,7 +103,7 @@
 
     monthList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-    monthFormat(month: number) {
+    monthFormat(month: any) {
       if (month < 10) {
         return '0' + month.toString();
       } else {
@@ -139,6 +139,8 @@
       for (let i = 0; i < expenseList.length; i++) {
         amount += expenseList[i].amount;
       }
+      // return Math.round(amount);
+      // return amount.toFixed(2);
       return amount.toFixed(2);
       // return amount;
     }
@@ -152,6 +154,7 @@
       for (let i = 0; i < expenseList.length; i++) {
         amount += expenseList[i].amount;
       }
+      // return Math.round(amount);
       return amount.toFixed(2);
       // return amount;
     }
@@ -159,7 +162,9 @@
     // 分离总支出/收入的小数
     handleAmount(amount: number) {
       const item = amount.toString().split('.');
-      return item;
+      const numberBeforeDot = item[0];
+      const numberAfterDot = item[1] || '00';
+      return [numberBeforeDot,numberAfterDot];
     }
 
 
@@ -195,6 +200,8 @@
           incomeAmount += group.items[i].amount;
         }
       }
+      expenseAmount = this.monthFormat(expenseAmount.toFixed(2));
+      incomeAmount = this.monthFormat(incomeAmount.toFixed(2));
       return [expenseAmount, incomeAmount];
     }
 
@@ -215,6 +222,14 @@
         '周五',
         '周六',
       ][value];
+    }
+
+    handleType(record: RecordItem){
+      if(record.type==='-'){
+        return '- ' + record.amount
+      }else{
+        return record.amount.toString();
+      }
     }
 
     @Watch('year')

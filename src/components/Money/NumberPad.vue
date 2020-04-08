@@ -180,12 +180,15 @@
             return result;
           }
         }
+      } else {
+        result = parseFloat(this.output);
+        return result;
       }
-      return result;
+      return result
     }
 
     ok() {
-      const result = this.outputChecker();
+      const result = parseFloat(this.outputChecker().toFixed(2));
       if (result === 0) {
         window.alert('记账金额为零哦');
         return;
@@ -194,7 +197,7 @@
         this.clear();
         return;
       } else {
-        this.$emit('update:value',result);
+        this.$emit('update:value', result);
         this.$emit('submit', result);
         this.clear();
       }
