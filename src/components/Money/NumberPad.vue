@@ -148,12 +148,14 @@
     }
 
     outputChecker() {
-      let result = parseFloat(this.output);
+      let result = 0;
       if (this.output.indexOf('+') >= 0 && this.output.indexOf('-') < 0) {
         const item = this.output.split('+');
         result = item [1] ?
           parseFloat(item[0]) + parseFloat(item[1]) :
           parseFloat(item[0]);
+        console.log(result);
+        return result;
       } else if (this.output.indexOf('-') >= 0) {
         const item = this.output.split('-');
         // console.log(item);
@@ -163,6 +165,7 @@
         } else if (item.length === 2) {
           if (item[0] !== '' && item[1] !== '') {
             result = parseFloat(item[0]) - parseFloat(item[1]);
+            return result;
           } else if (item[0] === '') {
             const count = item[1].split('+');
             if (count[1] === '') {
@@ -170,9 +173,11 @@
               this.clear();
             } else {
               result = parseFloat(count[1]) - parseFloat(count[0]);
+              return result;
             }
           } else if (item[1] === '') {
             result = parseFloat(item[0]);
+            return result;
           }
         }
       }
@@ -181,7 +186,6 @@
 
     ok() {
       const result = this.outputChecker();
-      // console.log(result)
       if (result === 0) {
         window.alert('记账金额为零哦');
         return;
@@ -190,8 +194,8 @@
         this.clear();
         return;
       } else {
-        this.$emit('update:value', parseFloat(this.output));
-        this.$emit('submit', parseFloat(this.output));
+        this.$emit('update:value',result);
+        this.$emit('submit', result);
         this.clear();
       }
 

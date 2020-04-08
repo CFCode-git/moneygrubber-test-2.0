@@ -140,7 +140,7 @@
         amount += expenseList[i].amount;
       }
       return amount.toFixed(2);
-      // return amount.toFixed(2);
+      // return amount;
     }
 
     // 当月总支出
@@ -153,7 +153,7 @@
         amount += expenseList[i].amount;
       }
       return amount.toFixed(2);
-      // return amount.toFixed(2);
+      // return amount;
     }
 
     // 分离总支出/收入的小数

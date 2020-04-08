@@ -36,7 +36,7 @@ const store = new Vuex.Store({
     createRecord(state, record) {
       const record2: RecordItem = clone(record);
       record2.createdAt = new Date().toISOString();
-      record2.id = createId().toString();
+      record2.id = createId();
       state.recordList.push(record2);
       store.commit('saveRecord');
     },
@@ -44,18 +44,21 @@ const store = new Vuex.Store({
       window.localStorage.setItem('recordList',
         JSON.stringify(state.recordList));
     },
-    updateRecord(state, payload: { id: string; tag: { name: string; value: string }; notes: string; type: string; amount: number; createdAt: string }) {
-      const {id, amount, notes, createdAt} = payload;
-      const idList = state.recordList.map(item => item.id);
-      if (idList.indexOf(id) >= 0) {
-        const record = state.recordList.filter(item => item.id === id)[0];
-        console.log(createdAt);
-        console.log(amount);
-        console.log(notes);
-        // record.notes = notes;
-        // record.amount = amount;
-        // record.createdAt = createdAt;
-        store.commit('saveRecord');
+    updateRecord(state, payload: { id: number; record: RecordItem }) {
+      const {id, record} = payload;
+      for(let i=0; i<state.recordList.length; i++) {
+        if(state.recordList[i].id === id){
+          state.recordList[i] = record;
+        }
+      }
+      store.commit('saveRecord')
+    },
+    removeRecord(state,id: number){
+      for(let i=0; i<state.recordList.length; i++){
+        if(state.recordList[i].id === id){
+          state.recordList.splice(i,1);
+          store.commit('saveRecord')
+        }
       }
     }
   }

@@ -28,7 +28,7 @@
   })
   export default class Money extends Vue {
     incomeTagList: TagItem[] = defaultIncomeTags;
-    record  = this.initRecord();
+    record = this.initRecord();
 
     get recordList() {
       return this.$store.state.recordList;

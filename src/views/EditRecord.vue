@@ -11,7 +11,7 @@
         </div>
         <span>{{record.tag.value}}</span>
       </div>
-      <button class="delete">删除</button>
+      <button class="delete" @click="deleteRecord">删除</button>
     </header>
     <main class="content">
       <div class="option">
@@ -51,6 +51,7 @@
   // var isLeapYear = require('dayjs/plugin/isLeapYear');
   import isLeapYear from 'dayjs/plugin/isLeapYear.js';
   import DatePicker from '@/components/EditRecord/DatePicker.vue';
+  import {parse} from '@typescript-eslint/parser';
 
   dayjs.extend(isLeapYear);
   @Component({
@@ -65,7 +66,7 @@
 
     created() {
       const id = this.$route.params.id;
-      const record = this.recordList.filter(t => t.id === id)[0];
+      const record = this.recordList.filter(t => t.id.toString() === id)[0];
       if (record) {
         this.record = record;
       } else {
@@ -108,8 +109,18 @@
     }
 
     ok() {
-      this.$store.commit('updateRecord', this.record);
-      this.$router.push('/statistics');
+      if(this.record){
+        this.record.amount = parseFloat(this.record.amount.toString());
+        this.$store.commit('updateRecord', {id:this.record.id,record:this.record});
+        this.$router.push('/statistics');
+      }
+    }
+
+    deleteRecord() {
+      if(this.record){
+        this.$store.commit('removeRecord', this.record.id);
+        this.$router.push('/statistics');
+      }
     }
 
   }
