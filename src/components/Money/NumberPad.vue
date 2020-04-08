@@ -71,8 +71,9 @@
         return;
       }
       if (this.output.indexOf('+') < 0 && this.output.indexOf('-') < 0) {
-        // console.log(1);
-        if (this.output.indexOf('.') >= 0) {return;}
+        if (this.output.indexOf('.') >= 0) {return;} else {
+          this.output += '.';
+        }
       } else {
         if (this.output.indexOf('+') >= 0) {
           const item = this.output.split('+');
@@ -84,7 +85,6 @@
           }
         } else if (this.output.indexOf('-') >= 0) {
           const item = this.output.split('-');
-
           if (item[1].indexOf('.') >= 0) {
             return;
           } else {
@@ -157,22 +157,22 @@
       } else if (this.output.indexOf('-') >= 0) {
         const item = this.output.split('-');
         // console.log(item);
-        if (item.length===3) {
+        if (item.length === 3) {
           // window.alert('怎么能记录负数呢');
           this.clear();
-        } else if(item.length===2){
-          if(item[0]!==''&& item[1]!==''){
+        } else if (item.length === 2) {
+          if (item[0] !== '' && item[1] !== '') {
             result = parseFloat(item[0]) - parseFloat(item[1]);
-          }else if(item[0]===''){
+          } else if (item[0] === '') {
             const count = item[1].split('+');
-            if(count[1]===''){
+            if (count[1] === '') {
               // window.alert('怎么能记录负数呢');
               this.clear();
-            }else{
+            } else {
               result = parseFloat(count[1]) - parseFloat(count[0]);
             }
-          }else if(item[1]===''){
-            result =  parseFloat(item[0]);
+          } else if (item[1] === '') {
+            result = parseFloat(item[0]);
           }
         }
       }
@@ -182,14 +182,14 @@
     ok() {
       const result = this.outputChecker();
       // console.log(result)
-      if(result === 0){
-        window.alert('记账金额为零哦')
+      if (result === 0) {
+        window.alert('记账金额为零哦');
         return;
-      }else if(result < 0){
-        window.alert('怎么能记录负数呢')
-        this.clear()
+      } else if (result < 0) {
+        window.alert('怎么能记录负数呢');
+        this.clear();
         return;
-      }else{
+      } else {
         this.$emit('update:value', parseFloat(this.output));
         this.$emit('submit', parseFloat(this.output));
         this.clear();
