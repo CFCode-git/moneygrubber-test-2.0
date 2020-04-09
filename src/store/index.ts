@@ -15,7 +15,6 @@ const store = new Vuex.Store({
   mutations: {
     fetchTagList(state) {
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '0') || defaultExpenseTags;
-      // console.log(state.tagList);
     },
     addTag(state, payload: { name: string; value: string }) {
       const {name, value} = payload;
@@ -46,18 +45,19 @@ const store = new Vuex.Store({
     },
     updateRecord(state, payload: { id: number; record: RecordItem }) {
       const {id, record} = payload;
-      for(let i=0; i<state.recordList.length; i++) {
-        if(state.recordList[i].id === id){
+      for (let i = 0; i < state.recordList.length; i++) {
+        if (state.recordList[i].id === id) {
+          record.amount = parseFloat(record.amount.toFixed(2));
           state.recordList[i] = record;
         }
       }
-      store.commit('saveRecord')
+      store.commit('saveRecord');
     },
-    removeRecord(state,id: number){
-      for(let i=0; i<state.recordList.length; i++){
-        if(state.recordList[i].id === id){
-          state.recordList.splice(i,1);
-          store.commit('saveRecord')
+    removeRecord(state, id: number) {
+      for (let i = 0; i < state.recordList.length; i++) {
+        if (state.recordList[i].id === id) {
+          state.recordList.splice(i, 1);
+          store.commit('saveRecord');
         }
       }
     }
