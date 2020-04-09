@@ -3,7 +3,7 @@
     <div class="content" :class="classPrefix && `${classPrefix}-content`">
       <slot/>
     </div>
-    <div v-if="money">
+    <div v-if="notMoney">
       <Nav/>
     </div>
   </div>
@@ -11,7 +11,7 @@
 
 <script lang="ts">
   export default {
-    props: ['classPrefix','money'],
+    props: ['classPrefix','notMoney'],
     name: 'Layout'
   };
 </script>
@@ -24,7 +24,8 @@
   }
 
   .content {
-    overflow: auto;
+    /*overflow: auto;*/
+    overflow: hidden;
     flex-grow: 1;
   }
 </style>

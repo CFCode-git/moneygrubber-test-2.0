@@ -6,7 +6,6 @@ import createId from '@/lib/createId';
 
 Vue.use(Vuex);
 
-
 const store = new Vuex.Store({
   state: {
     recordList: [],
