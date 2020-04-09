@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Layout :money="true">
+    <Layout notMoney="true">
       <div class="content">
         <header class="header">
           <div class="title">
