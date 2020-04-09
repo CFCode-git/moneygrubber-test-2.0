@@ -18,7 +18,7 @@
               <div class="month-wrapper">
                 <select v-model="month" class="month" name="month" id="month">
                   <option v-for="item in monthList" :key="item" :value="item">
-                    {{monthFormat(item)}}
+                    {{formatData(item)}}
                   </option>
                 </select>
                 <span>月</span>
@@ -103,14 +103,13 @@
 
     monthList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-    monthFormat(month: any) {
-      if (month < 10) {
-        return '0' + month.toString();
+    formatData(value: any) {
+      if (value < 10) {
+        return '0' + value.toString();
       } else {
-        return month.toString();
+        return value.toString();
       }
     }
-
 
     // 全部记录
     get recordList() {
@@ -130,7 +129,7 @@
       return currentRecordList;
     }
 
-    // 当月总收入
+    // 当月总收入 number : string
     get expenseAmount() {
       const {currentRecordList} = this;
       let amount = 0;
@@ -145,7 +144,7 @@
       // return amount;
     }
 
-    // 当月总支出
+    // 当月总支出  string
     get incomeAmount() {
       const {currentRecordList} = this;
       let amount = 0;
@@ -159,9 +158,9 @@
       // return amount;
     }
 
-    // 分离总支出/收入的小数
-    handleAmount(amount: number) {
-      const item = amount.toString().split('.');
+    // 分离总支出/收入的小数  string
+    handleAmount(amount: string) {
+      const item = amount.split('.');
       const numberBeforeDot = item[0];
       const numberAfterDot = item[1] || '00';
       return [numberBeforeDot,numberAfterDot];
@@ -189,7 +188,7 @@
       return result;
     }
 
-    // 计算每日支出收入 资金流
+    // 计算每日支出收入 资金流  string
     capitalFlow(group: HashTableValue) {
       let expenseAmount = 0;
       let incomeAmount = 0;
@@ -200,9 +199,9 @@
           incomeAmount += group.items[i].amount;
         }
       }
-      expenseAmount = this.monthFormat(expenseAmount.toFixed(2));
-      incomeAmount = this.monthFormat(incomeAmount.toFixed(2));
-      return [expenseAmount, incomeAmount];
+      const expenseDaily = expenseAmount.toFixed(2);
+      const incomeDaily = incomeAmount.toFixed(2);
+      return [expenseDaily, incomeDaily];
     }
 
     // createdAt 转化 为 日期
