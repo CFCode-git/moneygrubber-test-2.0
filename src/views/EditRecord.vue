@@ -51,7 +51,7 @@
   // var isLeapYear = require('dayjs/plugin/isLeapYear');
   import isLeapYear from 'dayjs/plugin/isLeapYear.js';
   import DatePicker from '@/components/EditRecord/DatePicker.vue';
-  import {parse} from '@typescript-eslint/parser';
+
 
   dayjs.extend(isLeapYear);
   @Component({

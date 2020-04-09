@@ -3,11 +3,11 @@
     <ul class="types">
       <li :class="{[classPrefix+'-item']:classPrefix,
         selected:value==='-'}"
-          @click="selectType('-')">支出
+          @click="selectType('-')">{{displayWord[0] || '支出'}}
       </li>
       <li :class="{[classPrefix+'-item']:classPrefix,
         selected:value==='+'}"
-          @click="selectType('+')">收入
+          @click="selectType('+')">{{displayWord[1] || '收入'}}
       </li>
     </ul>
     <button v-if="cancelButton" class="cancel" @click="cancel">取消</button>
@@ -23,6 +23,7 @@
     @Prop() readonly value!: string;
     @Prop() readonly classPrefix?: string;
     @Prop() readonly cancelButton?: boolean;
+    @Prop() readonly displayWord?: string[];
 
     selectType(type: string) {
       if (type !== '+' && type !== '-') {
