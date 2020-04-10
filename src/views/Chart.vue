@@ -1,17 +1,17 @@
 <template>
   <div>
     <Layout notMoney="true">
-      <Types class-prefix="chart" :value.sync="type" :display-word="displayWord"/>
+      <Types class-prefix="chart" :value.sync="selectedOption" :display-word="displayWord" :option-list="optionList"/>
       <div class="chart-wrapper">
         <div class="chart">
           <div class="caption">
             <div class="expense">
-              <span>总收入：{{1}}</span>
-              <span>平均：{{2}}</span>
+              <span>总收入：{{totalAmount[1]}}</span>
+              <span>平均值：{{averageAmount[1]}}</span>
             </div>
             <div class="income">
-              <span>总支出：{{2}}</span>
-              <span>平均：{{3}}</span>
+              <span>总支出：{{totalAmount[0]}}</span>
+              <span>平均值：{{averageAmount[0]}}</span>
             </div>
           </div>
           <div id="content" class="content" style="width: 100%;height:250px;">
@@ -300,7 +300,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component} from 'vue-property-decorator';
+  import {Component, Watch} from 'vue-property-decorator';
   import Types from '@/components/Money/Types.vue';
   import dayjs from 'dayjs';
   import isLeapYear from 'dayjs/plugin/isLeapYear.js';
@@ -312,10 +312,11 @@
     components: {Types}
   })
   export default class Chart extends Vue {
-    type = '-';
+    selectedOption = 'year';
     year = dayjs().year();
     month = dayjs().month() + 1;
     displayWord = ['按年', '按月'];
+    optionList = ['year', 'month'];
 
     // 当月天数
     get day() {
@@ -336,7 +337,7 @@
     }
 
     mounted() {
-      this.makeChart();
+      this.makeChart(this.calculateChartData());
     }
 
     // 全部记录
@@ -355,7 +356,6 @@
       }
       return result;
     }
-
 
     //当年当月记录
     get currentRecordList() {
@@ -433,13 +433,67 @@
     }
 
 
-    makeChart() {
-      const content = echarts.init(document.getElementById('content') as HTMLDivElement, null, {renderer: 'svg'});
-      const x = [...this.yearMap(this.yearExpense).keys()];
-      const y1 = [...this.yearMap(this.yearExpense).values()];
-      const y2 = [...this.yearMap(this.yearIncome).values()];
+    // 图表数据计算器
+    calculateChartData(): Map<string, number>[] {
+      let expenseMap = new Map<string, number>();
+      let incomeMap = new Map<string, number>();
+      if (this.selectedOption === 'year') {
+        expenseMap = this.yearMap(this.yearExpense);
+        incomeMap = this.yearMap(this.yearIncome);
+      } else if (this.selectedOption === 'month') {
+        expenseMap = this.monthMap(this.monthExpense);
+        incomeMap = this.monthMap(this.monthIncome);
+      }
+      return [expenseMap, incomeMap];
+    }
+
+    // 计算总值
+    get totalAmount() {
+      let totalExpenseAmount = 0;
+      let totalIncomeAmount = 0;
+      const result = this.calculateChartData();
+      const totalExpenseList = [...result[0].values()];
+      const totalIncomeList = [...result[1].values()];
+      for (let i = 0; i < totalExpenseList.length; i++) {
+        totalExpenseAmount += totalExpenseList[i];
+        totalExpenseAmount = parseFloat(totalExpenseAmount.toFixed(2));
+      }
+      for (let i = 0; i < totalIncomeList.length; i++) {
+        totalIncomeAmount += totalIncomeList[i];
+        totalIncomeAmount = parseFloat(totalIncomeAmount.toFixed(2));
+      }
+      return [totalExpenseAmount, totalIncomeAmount];
+    }
+
+
+    // 计算均值
+    get averageAmount() {
+      let averageExpense;
+      let averageIncome;
+      const result = this.calculateChartData();
+      const totalExpenseList = [...result[0].keys()];
+      const totalIncomeList = [...result[1].keys()];
+      averageExpense = this.totalAmount[0]/(totalExpenseList.length);
+      averageIncome = this.totalAmount[0]/(totalIncomeList.length);
+      averageIncome = parseFloat(averageIncome.toFixed(2));
+      averageExpense = parseFloat(averageExpense.toFixed(2));
+      return [averageExpense,averageIncome]
+    }
+
+    makeChart(data: Map<string, number>[]) {
+      const content = echarts.init(document.getElementById('content') as HTMLDivElement, undefined, {renderer: 'svg'});
+      // const x = [...this.yearMap(this.yearExpense).keys()];
+      // const y1 = [...this.yearMap(this.yearExpense).values()];
+      // const y2 = [...this.yearMap(this.yearIncome).values()];
+      const x = [...data[0].keys()];
+      const expenseY = [...data[0].values()];
+      const incomeY = [...data[1].values()];
 
       const option: any = {
+        grid: {
+          top: '20%',
+          bottom: '15%',
+        },
         tooltip: {
           trigger: 'axis'
         },
@@ -464,50 +518,64 @@
             }
           },
           axisLabel: {
-            interval: 0,
-            fontSize: 8,
+            interval: x.length > 12 ? 1 : 0,
+            fontSize: 10,
           },
         },
-        yAxis: {},
+        yAxis: {
+          axisTick: {
+            lineStyle: {
+              opacity: 0.5
+            }
+          },
+          axisLabel: {
+            interval: 0,
+            fontSize: 10,
+          },
+        },
         series: [
           {
             name: '支出',
             type: 'bar',
             color: '#3cb2ef',
-            data: y1,
+            data: expenseY,
             markLine: {
               data: [
                 {type: 'average', name: '平均值'}
               ]
             },
             animationDelay: function (idx: number) {
-              return idx * 50;
+              return idx * 10;
             }
           },
           {
             name: '收入',
             type: 'bar',
             color: '#ffdb00',
-            data: y2,
+            data: incomeY,
             markLine: {
               data: [
                 {type: 'average', name: '平均值'}
               ]
             },
             animationDelay: function (idx: number) {
-              return idx * 70;
+              return idx * 10 + 100;
             }
           }
         ],
         animationEasing: 'elasticOut',
         animationDelayUpdate: function (idx: number) {
-          return idx * 50;
+          return idx * 5;
         }
       };
       content.setOption(option);
     }
-  }
 
+    @Watch('selectedOption')
+    onSelectedOptionChange() {
+      this.makeChart(this.calculateChartData());
+    }
+  }
 </script>
 
 
@@ -543,17 +611,36 @@
     height: 100%;
     flex-direction: column;
     padding: 8px;
-    font-size:16px;
+    font-size: 16px;
+
     .chart {
       .caption {
-        padding: 4px;
-        text-align: center;
-        font-size: 10px;
-        color:#888;
+        padding: 8px;
+        border-bottom: 1px solid;
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 8px;
+
+        > .expense, .income {
+          padding-bottom: 4px;
+          display: flex;
+          align-items: center;
+
+          > span:first-child {
+            /*background-color: #ffdb00;*/
+            /*border-radius: 4px;*/
+            padding: 0 4px;
+            /*color:red;*/
+          }
+
+          > span:last-child {
+            padding-left: 8px;
+            font-size: 12px;
+          }
+        }
       }
 
       .content {
-
       }
     }
 

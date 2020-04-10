@@ -1,12 +1,13 @@
 <template>
   <div>
     <Layout class-prefix="layout">
-<!--      {{record}}-->
+      <!--      {{record}}-->
       <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
       <Notes :value.sync="record.notes"/>
       <Tags v-if="record.type==='-'" :selected-tag.sync="record.tag" :expense="true" :tag-list="expenseTagList"/>
       <Tags v-else-if="record.type==='+'" :selected-tag.sync="record.tag" :tag-list="incomeTagList"/>
-      <Types :value.sync="record.type" class-prefix="money" :cancelButton="true"/>
+      <Types :value.sync="record.type" class-prefix="money" :cancelButton="true" :display-word="displayWord"
+             :option-list="optionList"/>
     </Layout>
   </div>
 </template>
@@ -26,6 +27,9 @@
   export default class Money extends Vue {
     incomeTagList: TagItem[] = defaultIncomeTags;
     record = this.initRecord();
+    displayWord = ['支出', '收入'];
+    optionList = ['-', '+'];
+
 
     created() {
       this.$store.commit('fetchRecordList');
