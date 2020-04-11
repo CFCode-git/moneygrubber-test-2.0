@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Layout notMoney="true">
+    <Layout notMoney="true" class-prefix="chart">
       <div class="chart-wrapper">
         <Types class-prefix="chart" :value.sync="selectedOption" :display-word="displayWord" :option-list="optionList"/>
         <div class="result-wrapper" v-if="currentMonthRecordList.length>0">
@@ -348,6 +348,13 @@
     }
   }
 </script>
+
+<style lang="scss">
+  .chart-content {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
 
 
 <style scoped lang="scss">

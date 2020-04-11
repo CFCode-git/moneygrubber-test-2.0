@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Layout notMoney="true">
+    <Layout notMoney="true" class-prefix="statistics">
       <div class="content">
         <header class="header">
           <div class="title">
@@ -244,6 +244,14 @@
   }
 </script>
 
+
+<style lang="scss">
+  .statistics-content {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+
 <style scoped lang="scss">
   @import '~@/assets/styles/helper.scss';
 
@@ -252,6 +260,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    flex-grow: 1;
     .header {
       display: flex;
       flex-direction: column;
