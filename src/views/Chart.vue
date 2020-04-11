@@ -1,8 +1,8 @@
 <template>
   <div>
     <Layout notMoney="true">
-      <Types class-prefix="chart" :value.sync="selectedOption" :display-word="displayWord" :option-list="optionList"/>
       <div class="chart-wrapper">
+        <Types class-prefix="chart" :value.sync="selectedOption" :display-word="displayWord" :option-list="optionList"/>
         <div class="chart">
           <div class="caption">
             <div class="expense">
@@ -14,284 +14,26 @@
               <span>平均值：{{averageAmount[0]}}</span>
             </div>
           </div>
-          <div id="content" class="content" style="width: 100%;height:250px;">
+          <div id="content" class="content" style="width: 100%;height:200px;">
           </div>
         </div>
         <div class="rankedListCaption">
           支出排行榜
         </div>
-        <div class="rankedList">
-          <div class="content">
-            <ul>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div class="content">
-            <ul>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div class="content">
-            <ul>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div class="content">
-            <ul>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div class="content">
-            <ul>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-              <li>
-                <div class="icon-wrapper">
-                  <Icon/>
-                </div>
-                <div class="percent">
-                  <span>购物</span>
-                  <span>50%</span>
-                  <div class="bar">11111111111111111111111111111111111</div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <ul class="rankedList">
+          <li class="content" v-for="item in kindRank" :key="item[0]">
+            <div class="icon-wrapper">
+              <Icon :name="item[0]"/>
+              <span>{{item[1][0]}}</span>
+              <span>{{item[1][1]}}</span>
+            </div>
+            <div class="bar"
+                 :style="{transition:'all .3s', height:'5px', width: item[1][1], backgroundColor: '#ffdb00', borderRadius:'4px'}"
+            />
+          </li>
+        </ul>
+        <!--          </div>-->
+        <!--        </div>-->
       </div>
     </Layout>
   </div>
@@ -307,12 +49,13 @@
   import echarts from 'echarts';
   import 'zrender/lib/svg/svg';
   import retainDecimal from '@/lib/retainDecimal';
+  import clone from '@/lib/clone';
 
   @Component({
     components: {Types}
   })
   export default class Chart extends Vue {
-    selectedOption = 'year';
+    selectedOption = 'month';
     year = dayjs().year();
     month = dayjs().month() + 1;
     displayWord = ['按年', '按月'];
@@ -333,8 +76,8 @@
     }
 
     mounted() {
-      console.log(this.kindMap);
-      this.makeChart(this.calculateChartData());
+      console.log(this.kindRank);
+      this.makeChart();
     }
 
     // 全部记录
@@ -401,7 +144,7 @@
       const {expenseList} = this;
       const result: string[] = [];
       for (let i = 0; i < expenseList.length; i++) {
-        result.push(expenseList[i].tag.value);
+        result.push(expenseList[i].tag.name);
       }
       return Array.from(new Set(result));
     }
@@ -409,22 +152,34 @@
     // 排行榜数据计算器
     get kindMap() {
       const {kindList, expenseList} = this;
-      const result = new Map<string, number>();
+      type mapValue = [string, number]
+      const result = new Map<string, mapValue>();
       for (let i = 0; i < kindList.length; i++) {
-        result.set(kindList[i], 0);
+        result.set(kindList[i], ['', 0]);
       }
       for (const record of expenseList) {
-        const key = record.tag.value;
-        const amount = result.get(key) as number;
-        result.set(key, amount + record.amount);
+        const key = record.tag.name;
+        const amount = result.get(key) as mapValue;
+        result.set(key, [record.tag.value, amount[1] + record.amount]);
       }
       result.forEach((value, key) => {
-        const value2 = (value / parseFloat(this.totalAmount[0])) * 100;
+        const value2 = [value[0], (value[1] / parseFloat(this.totalAmount[0])) * 100] as mapValue;
         result.set(key, value2);
       });
+      console.log(result);
       return result;
     }
 
+    // 排序
+    get kindRank() {
+      const {kindMap} = this;
+      const kindList = Array.from(kindMap);
+      // console.log(kindList);
+      return clone(kindList).sort((a, b) => b[1][1] - a[1][1])
+        .map(item => [item[0], [item[1][0], retainDecimal(item[1][1]) + '%']]);
+    }
+
+    // 计算Map数据 [横坐标,纵坐标]
     intervalMap(recordList: RecordItem[]) {
       const result = new Map<string, number>();
       if (this.selectedOption === 'year') {
@@ -451,7 +206,7 @@
     }
 
     // 图表数据计算器
-    calculateChartData(): Map<string, number>[] {
+    get calculateChartData(): Map<string, number>[] {
       const expenseMap = this.intervalMap(this.expenseList);
       const incomeMap = this.intervalMap(this.incomeList);
       return [expenseMap, incomeMap];
@@ -463,7 +218,7 @@
       let sum2 = 0;
       let totalExpenseAmount = '0';
       let totalIncomeAmount = '0';
-      const result = this.calculateChartData();
+      const {calculateChartData: result} = this;
       const totalExpenseList = [...result[0].values()];
       const totalIncomeList = [...result[1].values()];
       for (let i = 0; i < totalExpenseList.length; i++) {
@@ -481,7 +236,7 @@
     get averageAmount() {
       let averageExpense;
       let averageIncome;
-      const result = this.calculateChartData();
+      const {calculateChartData: result} = this;
       const totalExpenseList = [...result[0].keys()];
       const totalIncomeList = [...result[1].keys()];
       averageExpense = parseFloat(this.totalAmount[0]) / (totalExpenseList.length);
@@ -491,16 +246,19 @@
       return [averageExpense, averageIncome];
     }
 
-    makeChart(data: Map<string, number>[]) {
+    makeChart() {
       const content = echarts.init(document.getElementById('content') as HTMLDivElement, undefined, {renderer: 'svg'});
-      const x = [...data[0].keys()];
-      const expenseY = [...data[0].values()];
-      const incomeY = [...data[1].values()];
+      const {calculateChartData} = this;
+      const x = [...calculateChartData[0].keys()];
+      const expenseY = [...calculateChartData[0].values()];
+      const incomeY = [...calculateChartData[1].values()];
 
       const option: any = {
         grid: {
           top: '20%',
-          bottom: '15%',
+          bottom: '10%',
+          left:'15%',
+          right:'15%'
         },
         tooltip: {
           trigger: 'axis'
@@ -581,7 +339,7 @@
 
     @Watch('selectedOption')
     onSelectedOptionChange() {
-      this.makeChart(this.calculateChartData());
+      this.makeChart();
     }
   }
 </script>
@@ -618,13 +376,14 @@
     display: flex;
     height: 100%;
     flex-direction: column;
-    padding: 8px;
-    font-size: 16px;
+    justify-content: center;
 
     .chart {
+      padding: 8px 16px;
+
       .caption {
-        padding: 8px;
-        border-bottom: 1px solid;
+        padding: 8px 0;
+        border-bottom: 1px solid #ccc;
         font-size: 14px;
         color: #888;
         margin-bottom: 8px;
@@ -635,10 +394,7 @@
           align-items: center;
 
           > span:first-child {
-            /*background-color: #ffdb00;*/
-            /*border-radius: 4px;*/
             padding: 0 4px;
-            /*color:red;*/
           }
 
           > span:last-child {
@@ -647,18 +403,44 @@
           }
         }
       }
-
-      .content {
-      }
     }
 
     .rankedListCaption {
+      color: #666;
+      padding: 8px 0 0 0;
+      border-top: 1px solid #ccc;
+      margin: 8px 16px;
+      font-size: 16px;
     }
 
     .rankedList {
+      color: #666;
       overflow: auto;
+      padding: 0 16px;
+      flex-grow: 1;
+      font-size: 14px;
 
       .content {
+
+        padding-bottom: 8px;
+
+        .icon-wrapper {
+          padding: 8px 0;
+          display: flex;
+          align-items: center;
+
+          > .icon {
+            border: 1px solid red;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            padding: 4px;
+            text-align: center;
+          }
+          > * {
+            margin-right: 8px;
+          }
+        }
       }
     }
   }
