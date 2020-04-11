@@ -112,10 +112,8 @@
     ok() {
       if (this.record) {
         this.record.amount = parseFloat(this.record.amount.toString());
-        console.log(this.record.amount);
         this.$store.commit('updateRecord', {id: this.record.id, record: this.record});
         if(this.$store.state.createRecordError){
-          console.log(this.$store.state.createRecordError)
           this.record.amount = this.oldAmount
         }
       }

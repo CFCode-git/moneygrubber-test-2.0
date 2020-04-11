@@ -100,7 +100,6 @@
       const lastIndex = this.output.length - 1;
       if (this.output[lastIndex] === '+' || this.output[lastIndex] === '-') {
         this.output = this.output.slice(0, lastIndex);
-        // this.output = this.output.slice(0,-2);
         this.output += input;
         return;
       }
@@ -111,18 +110,14 @@
         if (this.output.indexOf('+') >= 0) {
           const item = this.output.split('+');
           result = parseFloat(item[0]) + parseFloat(item[1]);
-          // result = result.toFixed(2);
           this.output = result.toString() + input;
         } else if (this.output.indexOf('-') >= 0) {
           const item = this.output.split('-');
-          // console.log(item);
-          // console.log(item.length);
           if (item.length > 2) {
             result = (-1 * parseFloat(item[1])) - parseFloat(item[2]);
           } else {
             result = parseFloat(item[0]) - parseFloat(item[1]);
           }
-          // result = result.toFixed(2);
           this.output = result.toString() + input;
         }
       }
@@ -155,13 +150,10 @@
         result = item [1] ?
           parseFloat(item[0]) + parseFloat(item[1]) :
           parseFloat(item[0]);
-        console.log(result);
         return result;
       } else if (this.output.indexOf('-') >= 0) {
         const item = this.output.split('-');
-        // console.log(item);
         if (item.length === 3) {
-          // window.alert('怎么能记录负数呢');
           this.clear();
         } else if (item.length === 2) {
           if (item[0] !== '' && item[1] !== '') {
@@ -170,7 +162,6 @@
           } else if (item[0] === '') {
             const count = item[1].split('+');
             if (count[1] === '') {
-              // window.alert('怎么能记录负数呢');
               this.clear();
             } else {
               result = parseFloat(count[1]) - parseFloat(count[0]);

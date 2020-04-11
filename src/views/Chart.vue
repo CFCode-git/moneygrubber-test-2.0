@@ -79,9 +79,6 @@
     }
 
     mounted() {
-      console.log(this.kindRank);
-      console.log(dayjs().date());
-      console.log(dayjs().month());
       if (this.currentMonthRecordList.length > 0) {
         this.makeChart();
       }
@@ -155,7 +152,6 @@
         const value2 = [value[0], (value[1] / parseFloat(this.totalAmount[0])) * 100] as mapValue;
         result.set(key, value2);
       });
-      console.log(result);
       return result;
     }
 
@@ -163,7 +159,6 @@
     get kindRank() {
       const {kindMap} = this;
       const kindList = Array.from(kindMap);
-      // console.log(kindList);
       return clone(kindList).sort((a, b) => b[1][1] - a[1][1])
         .map(item => [item[0], [item[1][0], retainDecimal(item[1][1]) + '%']]);
     }
