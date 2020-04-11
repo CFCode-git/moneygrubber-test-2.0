@@ -117,24 +117,6 @@
       }
     }
 
-    // 全部记录
-    // get recordList() {
-    //   return (this.$store.state as RootState).recordList;
-    // }
-
-    // 筛选当月记录
-    // get currentMonthRecordList() {
-    //   const {recordList} = this;
-    //   const result: RecordItem[] = [];
-    //   for (let i = 0; i < recordList.length; i++) {
-    //     if ((dayjs(recordList[i].createdAt).year()) === this.year &&
-    //       (dayjs(recordList[i].createdAt).month() + 1) === this.month) {
-    //       result.push(recordList[i]);
-    //     }
-    //   }
-    //   return result;
-    // }
-
     // 当月总收入 number : string
     get expenseAmount() {
       const {currentMonthRecordList} = this;
@@ -361,15 +343,6 @@
             margin-right: 20%;
           }
         }
-
-
-        /*.amount {*/
-        /*  display: flex;*/
-        /*  width: 100%;*/
-        /*  justify-content: space-evenly;*/
-
-
-        /*}*/
       }
     }
     .records-wrapper{

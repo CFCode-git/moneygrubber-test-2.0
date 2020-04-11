@@ -61,8 +61,6 @@
   })
   export default class Chart extends mixins(timeHelper) {
     selectedOption = 'month';
-    // year = dayjs().year();
-    // month = dayjs().month() + 1;
     displayWord = ['按年', '按月'];
     optionList = ['year', 'month'];
 
@@ -85,11 +83,6 @@
       this.makeChart();
     }
 
-    // 全部记录
-    // get recordList() {
-    //   return (this.$store.state as RootState).recordList;
-    // }
-
     // 当年记录
     get currentYearRecordList() {
       const {recordList} = this;
@@ -101,19 +94,6 @@
       }
       return result;
     }
-
-    //当月记录
-    // get currentMonthRecordList() {
-    //   const {recordList} = this;
-    //   const result: RecordItem[] = [];
-    //   for (let i = 0; i < recordList.length; i++) {
-    //     if ((dayjs(recordList[i].createdAt).year()) === this.year &&
-    //       (dayjs(recordList[i].createdAt).month() + 1) === this.month) {
-    //       result.push(recordList[i]);
-    //     }
-    //   }
-    //   return result;
-    // }
 
     // type筛选器
     typeFilter(recordList: RecordItem[], type: string): RecordItem[] {
