@@ -29,7 +29,6 @@
     displayWord = ['支出', '收入'];
     optionList = ['-', '+'];
 
-
     created() {
       this.$store.commit('fetchRecordList');
       this.$store.commit('fetchTagList');
@@ -40,7 +39,7 @@
     }
 
     get expenseTagList() {
-      return this.$store.state.tagList;
+      return (this.$store.state as RootState).tagList;
     }
 
     initRecord() {

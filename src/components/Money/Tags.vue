@@ -24,6 +24,11 @@
     @Prop() readonly tagList!: TagItem[];
     @Prop() readonly expense!: boolean;
     @Prop() readonly selectedTag!: TagItem;
+
+    created(){
+      console.log(this.tagList)
+    }
+
     toggle(tag: TagItem) {
       this.$emit('update:selected-tag', tag);
     }

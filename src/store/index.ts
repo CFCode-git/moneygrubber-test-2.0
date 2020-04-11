@@ -17,7 +17,7 @@ const store = new Vuex.Store({
     } as RootState,
     mutations: {
       fetchTagList(state) {
-        state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '0') || defaultExpenseTags;
+        state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '0' ) || defaultExpenseTags;
       },
       addTag(state, payload: { name: string; value: string }) {
         state.addTagError = null;

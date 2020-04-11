@@ -2,6 +2,9 @@ const path = require('path')
 
 
 module.exports = {
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/moneygrubber2.0-website/'
+    : '/',
   lintOnSave: false,
   chainWebpack: config => {
     const dir = path.resolve(__dirname, 'src/assets/icons') // __dirname表示当前目录
