@@ -119,6 +119,11 @@
     defaultOtherTags,
     defaultTrafficTags
   } from '@/defaultTags';
+  import router from '@/router';
+
+  const map: { [key: string]: string } = {
+    'duplicated tag': '标签已存在'
+  };
 
   @Component
   export default class AddTag extends Vue {
@@ -142,7 +147,9 @@
 
     ok() {
       this.$store.commit('addTag', this.selectedTag);
-      this.$router.push('/money');
+      if (this.$store.state.addTagError) {
+        window.alert(map[this.$store.state.addTagError.message] || '未知错误');
+      }
     }
   }
 </script>
@@ -195,6 +202,7 @@
     .contents {
       overflow: auto;
       padding: 20px 8px 0 8px;
+
       .content {
         font-size: 18px;
         padding: 8px 0;

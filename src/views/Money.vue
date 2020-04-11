@@ -50,7 +50,11 @@
 
     saveRecord() {
       this.$store.commit('createRecord', this.record);
-      this.record.notes = '';
+      if(this.$store.state.createRecordError === null){
+        window.alert('记录成功！');
+        this.record.notes = '';
+        this.$router.push('/statistics')
+      }
     }
 
     @Watch('record.type')

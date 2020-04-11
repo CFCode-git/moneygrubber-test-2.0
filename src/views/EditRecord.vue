@@ -20,7 +20,7 @@
       </div>
       <div class="option">
         <span>金额：</span>
-        <input type="text"
+        <input type="number"
                v-model="record.amount">
       </div>
       <div class="option">
@@ -58,6 +58,7 @@
   })
   export default class EditRecord extends Vue {
     record?: RecordItem;
+    oldAmount = 0;
 
     beforeCreate() {
       this.$store.commit('fetchRecordList');
@@ -68,6 +69,7 @@
       const record = this.recordList.filter(t => t.id.toString() === id)[0];
       if (record) {
         this.record = record;
+        this.oldAmount = record.amount;
       } else {
         this.$router.replace('/404');
       }
@@ -110,9 +112,12 @@
     ok() {
       if (this.record) {
         this.record.amount = parseFloat(this.record.amount.toString());
+        console.log(this.record.amount);
         this.$store.commit('updateRecord', {id: this.record.id, record: this.record});
-        window.alert('更改成功');
-        this.$router.push('/statistics');
+        if(this.$store.state.createRecordError){
+          console.log(this.$store.state.createRecordError)
+          this.record.amount = this.oldAmount
+        }
       }
     }
 
@@ -121,7 +126,6 @@
       if (result) {
         if (this.record) {
           this.$store.commit('removeRecord', this.record.id);
-          this.$router.push('/statistics');
         }
       }
     }

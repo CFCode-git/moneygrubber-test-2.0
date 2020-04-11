@@ -200,10 +200,8 @@
       } else {
         this.$emit('update:value', result);
         this.$emit('submit', result);
-        window.alert('记录成功！')
         this.clear();
       }
-
     }
   }
 </script>
