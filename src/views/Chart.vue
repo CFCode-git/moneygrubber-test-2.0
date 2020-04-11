@@ -80,7 +80,11 @@
 
     mounted() {
       console.log(this.kindRank);
-      this.makeChart();
+      console.log(dayjs().date());
+      console.log(dayjs().month());
+      if (this.currentMonthRecordList.length > 0) {
+        this.makeChart();
+      }
     }
 
     // 当年记录
@@ -221,11 +225,14 @@
     get averageAmount() {
       let averageExpense;
       let averageIncome;
-      const {calculateChartData: result} = this;
-      const totalExpenseList = [...result[0].keys()];
-      const totalIncomeList = [...result[1].keys()];
-      averageExpense = parseFloat(this.totalAmount[0]) / (totalExpenseList.length);
-      averageIncome = parseFloat(this.totalAmount[1]) / (totalIncomeList.length);
+      let passTime;
+      if (this.selectedOption === 'year') {
+        passTime = this.month;
+      } else {
+        passTime = dayjs().date();
+      }
+      averageExpense = parseFloat(this.totalAmount[0]) / passTime;
+      averageIncome = parseFloat(this.totalAmount[1]) / passTime;
       averageIncome = retainDecimal(averageIncome);
       averageExpense = retainDecimal(averageExpense);
       return [averageExpense, averageIncome];
