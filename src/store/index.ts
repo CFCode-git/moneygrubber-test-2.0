@@ -71,6 +71,7 @@ const store = new Vuex.Store({
         }
         store.commit('saveRecord');
         window.alert('更改成功');
+        router.back();
       },
       removeRecord(state, id: number) {
         let index = -1;

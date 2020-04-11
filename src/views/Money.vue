@@ -1,7 +1,6 @@
 <template>
   <div>
     <Layout class-prefix="layout">
-      <!--      {{record}}-->
       <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
       <Notes :value.sync="record.notes"/>
       <Tags v-if="record.type==='-'" :selected-tag.sync="record.tag" :expense="true" :tag-list="expenseTagList"/>
