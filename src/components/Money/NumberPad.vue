@@ -36,6 +36,7 @@
   import Vue from 'vue';
   import {Component, Prop} from 'vue-property-decorator';
   import {parse} from '@typescript-eslint/parser';
+  import retainDecimal from '@/lib/retainDecimal';
 
   @Component
   export default class NumberPad extends Vue {
@@ -188,7 +189,7 @@
     }
 
     ok() {
-      const result = parseFloat(this.outputChecker().toFixed(2));
+      const result = parseFloat(retainDecimal(this.outputChecker()));
       if (result === 0) {
         window.alert('记账金额为零哦');
         return;

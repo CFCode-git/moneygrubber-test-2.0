@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import clone from '@/lib/clone';
 import {defaultExpenseTags} from '@/defaultTags';
 import createId from '@/lib/createId';
+import retainDecimal from '@/lib/retainDecimal';
 
 Vue.use(Vuex);
 
@@ -46,7 +47,7 @@ const store = new Vuex.Store({
       const {id, record} = payload;
       for (let i = 0; i < state.recordList.length; i++) {
         if (state.recordList[i].id === id) {
-          record.amount = parseFloat(record.amount.toFixed(2));
+          record.amount = parseFloat(retainDecimal(record.amount));
           state.recordList[i] = record;
         }
       }

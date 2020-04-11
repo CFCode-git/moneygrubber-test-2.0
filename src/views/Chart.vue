@@ -306,6 +306,7 @@
   import isLeapYear from 'dayjs/plugin/isLeapYear.js';
   import echarts from 'echarts';
   import 'zrender/lib/svg/svg';
+  import retainDecimal from '@/lib/retainDecimal';
 
 
   @Component({
@@ -330,10 +331,6 @@
 
     beforeCreate() {
       this.$store.commit('fetchRecordList');
-    }
-
-    created() {
-      // console.log(echarts);
     }
 
     mounted() {
@@ -456,11 +453,11 @@
       const totalIncomeList = [...result[1].values()];
       for (let i = 0; i < totalExpenseList.length; i++) {
         totalExpenseAmount += totalExpenseList[i];
-        totalExpenseAmount = parseFloat(totalExpenseAmount.toFixed(2));
+        totalExpenseAmount = parseFloat(retainDecimal(totalExpenseAmount));
       }
       for (let i = 0; i < totalIncomeList.length; i++) {
         totalIncomeAmount += totalIncomeList[i];
-        totalIncomeAmount = parseFloat(totalIncomeAmount.toFixed(2));
+        totalIncomeAmount = parseFloat(retainDecimal(totalIncomeAmount));
       }
       return [totalExpenseAmount, totalIncomeAmount];
     }
@@ -473,11 +470,11 @@
       const result = this.calculateChartData();
       const totalExpenseList = [...result[0].keys()];
       const totalIncomeList = [...result[1].keys()];
-      averageExpense = this.totalAmount[0]/(totalExpenseList.length);
-      averageIncome = this.totalAmount[0]/(totalIncomeList.length);
-      averageIncome = parseFloat(averageIncome.toFixed(2));
-      averageExpense = parseFloat(averageExpense.toFixed(2));
-      return [averageExpense,averageIncome]
+      averageExpense = this.totalAmount[0] / (totalExpenseList.length);
+      averageIncome = this.totalAmount[0] / (totalIncomeList.length);
+      averageIncome = parseFloat(retainDecimal(averageIncome));
+      averageExpense = parseFloat(retainDecimal(averageExpense));
+      return [averageExpense, averageIncome];
     }
 
     makeChart(data: Map<string, number>[]) {

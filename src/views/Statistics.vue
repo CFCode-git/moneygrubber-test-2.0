@@ -80,6 +80,7 @@
   import {Component, Watch} from 'vue-property-decorator';
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';
+  import retainDecimal from '@/lib/retainDecimal';
 
   @Component({})
   export default class Statistics extends Vue {
@@ -140,7 +141,7 @@
       }
       // return Math.round(amount);
       // return amount.toFixed(2);
-      return amount.toFixed(2);
+      return retainDecimal(amount);
       // return amount;
     }
 
@@ -154,7 +155,7 @@
         amount += expenseList[i].amount;
       }
       // return Math.round(amount);
-      return amount.toFixed(2);
+      return retainDecimal(amount);
       // return amount;
     }
 
@@ -163,7 +164,7 @@
       const item = amount.split('.');
       const numberBeforeDot = item[0];
       const numberAfterDot = item[1] || '00';
-      return [numberBeforeDot,numberAfterDot];
+      return [numberBeforeDot, numberAfterDot];
     }
 
 
@@ -199,8 +200,8 @@
           incomeAmount += group.items[i].amount;
         }
       }
-      const expenseDaily = expenseAmount.toFixed(2);
-      const incomeDaily = incomeAmount.toFixed(2);
+      const expenseDaily = retainDecimal(expenseAmount);
+      const incomeDaily = retainDecimal(incomeAmount);
       return [expenseDaily, incomeDaily];
     }
 
@@ -223,10 +224,10 @@
       ][value];
     }
 
-    handleType(record: RecordItem){
-      if(record.type==='-'){
-        return '- ' + record.amount
-      }else{
+    handleType(record: RecordItem) {
+      if (record.type === '-') {
+        return '- ' + record.amount;
+      } else {
         return record.amount.toString();
       }
     }
