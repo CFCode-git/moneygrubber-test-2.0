@@ -3,37 +3,41 @@
     <Layout notMoney="true">
       <div class="chart-wrapper">
         <Types class-prefix="chart" :value.sync="selectedOption" :display-word="displayWord" :option-list="optionList"/>
-        <div class="chart">
-          <div class="caption">
-            <div class="expense">
-              <span>总收入：{{totalAmount[1]}}</span>
-              <span>平均值：{{averageAmount[1]}}</span>
+        <div class="result-wrapper" v-if="currentMonthRecordList.length>0">
+          <div class="chart">
+            <div class="caption">
+              <div class="expense">
+                <span>总收入：{{totalAmount[1]}}</span>
+                <span>平均值：{{averageAmount[1]}}</span>
+              </div>
+              <div class="income">
+                <span>总支出：{{totalAmount[0]}}</span>
+                <span>平均值：{{averageAmount[0]}}</span>
+              </div>
             </div>
-            <div class="income">
-              <span>总支出：{{totalAmount[0]}}</span>
-              <span>平均值：{{averageAmount[0]}}</span>
+            <div id="content" class="content" style="width: 100%;height:200px;">
             </div>
           </div>
-          <div id="content" class="content" style="width: 100%;height:200px;">
+          <div class="rankedListCaption">
+            支出排行榜
           </div>
+          <ul class="rankedList">
+            <li class="content" v-for="item in kindRank" :key="item[0]">
+              <div class="icon-wrapper">
+                <Icon :name="item[0]"/>
+                <span>{{item[1][0]}}</span>
+                <span>{{item[1][1]}}</span>
+              </div>
+              <div class="bar"
+                   :style="{transition:'all .3s', height:'5px', width: item[1][1], backgroundColor: '#ffdb00', borderRadius:'4px'}"
+              />
+            </li>
+          </ul>
         </div>
-        <div class="rankedListCaption">
-          支出排行榜
+        <div v-else class="noResult">
+          <span class="noResult-message">还没有记录哦，赶紧记一笔吧~</span>
+          <icon class="noResult-icon" name="nothing"/>
         </div>
-        <ul class="rankedList">
-          <li class="content" v-for="item in kindRank" :key="item[0]">
-            <div class="icon-wrapper">
-              <Icon :name="item[0]"/>
-              <span>{{item[1][0]}}</span>
-              <span>{{item[1][1]}}</span>
-            </div>
-            <div class="bar"
-                 :style="{transition:'all .3s', height:'5px', width: item[1][1], backgroundColor: '#ffdb00', borderRadius:'4px'}"
-            />
-          </li>
-        </ul>
-        <!--          </div>-->
-        <!--        </div>-->
       </div>
     </Layout>
   </div>
@@ -257,8 +261,8 @@
         grid: {
           top: '20%',
           bottom: '10%',
-          left:'15%',
-          right:'15%'
+          left: '15%',
+          right: '15%'
         },
         tooltip: {
           trigger: 'axis'
@@ -377,70 +381,86 @@
     height: 100%;
     flex-direction: column;
     justify-content: center;
+    .result-wrapper{
+      display: flex;
+      height: 100%;
+      flex-direction: column;
+      justify-content: center;
+      overflow: auto;
+      .chart {
+        padding: 8px 16px;
+        .caption {
+          padding: 8px 0;
+          border-bottom: 1px solid #ccc;
+          font-size: 14px;
+          color: #888;
+          margin-bottom: 8px;
 
-    .chart {
-      padding: 8px 16px;
+          > .expense, .income {
+            padding-bottom: 4px;
+            display: flex;
+            align-items: center;
 
-      .caption {
-        padding: 8px 0;
-        border-bottom: 1px solid #ccc;
-        font-size: 14px;
-        color: #888;
-        margin-bottom: 8px;
+            > span:first-child {
+              padding: 0 4px;
+            }
 
-        > .expense, .income {
-          padding-bottom: 4px;
-          display: flex;
-          align-items: center;
-
-          > span:first-child {
-            padding: 0 4px;
+            > span:last-child {
+              padding-left: 8px;
+              font-size: 12px;
+            }
           }
+        }
+      }
+      .rankedListCaption {
+        color: #666;
+        padding: 8px 0 0 0;
+        border-top: 1px solid #ccc;
+        margin: 8px 16px;
+        font-size: 16px;
+      }
+      .rankedList {
+        color: #666;
+        flex-grow: 1;
+        overflow: auto;
+        padding: 0 16px;
+        font-size: 14px;
+        .content {
+          padding-bottom: 8px;
+          .icon-wrapper {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
 
-          > span:last-child {
-            padding-left: 8px;
-            font-size: 12px;
+            > .icon {
+              border: 1px solid red;
+              width: 24px;
+              height: 24px;
+              border-radius: 50%;
+              padding: 4px;
+              text-align: center;
+            }
+
+            > * {
+              margin-right: 8px;
+            }
           }
         }
       }
     }
-
-    .rankedListCaption {
-      color: #666;
-      padding: 8px 0 0 0;
-      border-top: 1px solid #ccc;
-      margin: 8px 16px;
-      font-size: 16px;
-    }
-
-    .rankedList {
-      color: #666;
-      overflow: auto;
-      padding: 0 16px;
+    .noResult{
       flex-grow: 1;
-      font-size: 14px;
-
-      .content {
-
-        padding-bottom: 8px;
-
-        .icon-wrapper {
-          padding: 8px 0;
-          display: flex;
-          align-items: center;
-
-          > .icon {
-            border: 1px solid red;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            padding: 4px;
-            text-align: center;
-          }
-          > * {
-            margin-right: 8px;
-          }
-        }
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      &-message{
+        padding:30px;
+      }
+      .noResult-icon {
+        width: 128px;
+        height: 128px;
       }
     }
   }

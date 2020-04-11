@@ -42,34 +42,38 @@
             </div>
           </div>
         </header>
-
-        <ol class="records">
-          <li v-for="(group,index) in groupedList" :key="index">
-            <div class="recordTitle">
-              <div class="date">
-                <span>{{toDate(group)}}</span>
-                <span>{{toWeek(group)}}</span>
-              </div>
-              <div class="detail">
-                <span>支出：{{capitalFlow(group)[0]}}</span>
-                <span>收入：{{capitalFlow(group)[1]}}</span>
-              </div>
-            </div>
-            <div>
-              <router-link class="recordList"
-                           v-for="item in group.items" :key="item.id"
-                           :to="`/record/edit/${item.id}`"
-              >
-                <div class="recordTag">
-                  <Icon :name="item.tag.name"/>
-                  <span>{{item.tag.value}}</span>
+        <div class="records-wrapper" v-if="currentRecordList.length>0">
+          <ol class="records">
+            <li v-for="(group,index) in groupedList" :key="index">
+              <div class="recordTitle">
+                <div class="date">
+                  <span>{{toDate(group)}}</span>
+                  <span>{{toWeek(group)}}</span>
                 </div>
-                <span class="recordAmount">{{handleType(item)}}</span>
-              </router-link>
-            </div>
-          </li>
-        </ol>
-
+                <div class="detail">
+                  <span>支出：{{capitalFlow(group)[0]}}</span>
+                  <span>收入：{{capitalFlow(group)[1]}}</span>
+                </div>
+              </div>
+              <div>
+                <router-link class="recordList"
+                             v-for="item in group.items" :key="item.id"
+                             :to="`/record/edit/${item.id}`"
+                >
+                  <div class="recordTag">
+                    <Icon :name="item.tag.name"/>
+                    <span>{{item.tag.value}}</span>
+                  </div>
+                  <span class="recordAmount">{{handleType(item)}}</span>
+                </router-link>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div v-else class="noResult">
+          <span class="noResult-message">还没有记录哦，赶紧记一笔吧~</span>
+          <icon class="noResult-icon" name="nothing"/>
+        </div>
       </div>
     </Layout>
   </div>
@@ -247,7 +251,6 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-
     .header {
       display: flex;
       flex-direction: column;
@@ -359,60 +362,78 @@
         /*}*/
       }
     }
-
-    .records {
-      flex-grow: 1;
+    .records-wrapper{
       overflow: auto;
-      padding: 16px;
-
-      .recordTitle {
-        font-size: 14px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #ccc;
-        color: #888;
-
-        .date {
-          span:first-child {
-            padding-right: 4px;
-          }
-        }
-
-        .detail {
-          span:last-child {
-            padding-left: 4px;
-          }
-        }
-      }
-
-      .recordList {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px 0;
-        color: #555;
-
-        .recordTag {
-          padding: 2px;
+      flex-grow: 1;
+      .records {
+        overflow: auto;
+        padding: 16px;
+        .recordTitle {
+          font-size: 14px;
           display: flex;
-          justify-content: center;
+          justify-content: space-between;
           align-items: center;
+          border-bottom: 1px solid #ccc;
+          color: #888;
 
-          .icon {
-            background-color: $color-highlight;
-            width: 28px;
-            height: 28px;
-            padding: 4px;
-            border-radius: 50%;
+          .date {
+            span:first-child {
+              padding-right: 4px;
+            }
           }
 
-          > span {
-            padding-left: 8px;
+          .detail {
+            span:last-child {
+              padding-left: 4px;
+            }
           }
         }
-      }
 
+        .recordList {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 8px 0;
+          color: #555;
+
+          .recordTag {
+            padding: 2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .icon {
+              background-color: $color-highlight;
+              width: 28px;
+              height: 28px;
+              padding: 4px;
+              border-radius: 50%;
+            }
+
+            > span {
+              padding-left: 8px;
+            }
+          }
+        }
+
+      }
     }
+
+    .noResult{
+      flex-grow: 1;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      &-message{
+        padding:30px;
+      }
+      .noResult-icon {
+        width: 128px;
+        height: 128px;
+      }
+    }
+
   }
 </style>
