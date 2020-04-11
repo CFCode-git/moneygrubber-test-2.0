@@ -139,10 +139,7 @@
       for (let i = 0; i < expenseList.length; i++) {
         amount += expenseList[i].amount;
       }
-      // return Math.round(amount);
-      // return amount.toFixed(2);
       return retainDecimal(amount);
-      // return amount;
     }
 
     // 当月总支出  string
@@ -154,9 +151,7 @@
       for (let i = 0; i < expenseList.length; i++) {
         amount += expenseList[i].amount;
       }
-      // return Math.round(amount);
       return retainDecimal(amount);
-      // return amount;
     }
 
     // 分离总支出/收入的小数  string

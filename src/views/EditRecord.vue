@@ -29,7 +29,6 @@
                     @update:month="updateMonth"
                     @update:date="updateDate"
         />
-        <!--        <span>{{week}}</span>-->
       </div>
       <div class="option">
         <span>备注：</span>
@@ -109,20 +108,23 @@
     }
 
     ok() {
-      if(this.record){
+      if (this.record) {
         this.record.amount = parseFloat(this.record.amount.toString());
-        this.$store.commit('updateRecord', {id:this.record.id,record:this.record});
+        this.$store.commit('updateRecord', {id: this.record.id, record: this.record});
+        window.alert('更改成功');
         this.$router.push('/statistics');
       }
     }
 
     deleteRecord() {
-      if(this.record){
-        this.$store.commit('removeRecord', this.record.id);
-        this.$router.push('/statistics');
+      const result = window.confirm('确认删除?');
+      if (result) {
+        if (this.record) {
+          this.$store.commit('removeRecord', this.record.id);
+          this.$router.push('/statistics');
+        }
       }
     }
-
   }
 </script>
 
