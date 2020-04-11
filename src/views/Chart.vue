@@ -326,7 +326,11 @@
 
     @Watch('selectedOption')
     onSelectedOptionChange() {
-      this.makeChart();
+      if (this.currentMonthRecordList.length > 0 || this.currentYearRecordList.length > 0){
+        this.makeChart();
+      }else{
+        return;
+      }
     }
   }
 </script>
