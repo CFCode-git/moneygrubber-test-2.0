@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="rankedListCaption">
-          排行榜
+          支出排行榜
         </div>
         <div class="rankedList">
           <div class="content">
@@ -308,7 +308,6 @@
   import 'zrender/lib/svg/svg';
   import retainDecimal from '@/lib/retainDecimal';
 
-
   @Component({
     components: {Types}
   })
@@ -334,6 +333,7 @@
     }
 
     mounted() {
+      console.log(this.kindMap);
       this.makeChart(this.calculateChartData());
     }
 
@@ -354,17 +354,17 @@
       return result;
     }
 
-    //当年当月记录
-    get currentRecordList() {
+    //当月记录
+    get currentMonthRecordList() {
       const {recordList} = this;
-      const currentMonthRecords: RecordItem[] = [];
+      const result: RecordItem[] = [];
       for (let i = 0; i < recordList.length; i++) {
         if ((dayjs(recordList[i].createdAt).year()) === this.year &&
           (dayjs(recordList[i].createdAt).month() + 1) === this.month) {
-          currentMonthRecords.push(recordList[i]);
+          result.push(recordList[i]);
         }
       }
-      return currentMonthRecords;
+      return result;
     }
 
     // type筛选器
@@ -378,110 +378,121 @@
       return result;
     }
 
-    // 年支出列表
-    get yearExpense() {
-      return this.typeFilter(this.recordList, '-');
-    }
-
-    // 年收入列表
-    get yearIncome() {
-      return this.typeFilter(this.recordList, '+');
-    }
-
-    // 月支出列表
-    get monthExpense() {
-      return this.typeFilter(this.currentRecordList, '-');
-    }
-
-    // 月收入列表
-    get monthIncome() {
-      return this.typeFilter(this.currentRecordList, '+');
-    }
-
-    // 处理月数据
-    monthMap(recordList: RecordItem[]) {
-      // const key: string[] = [];
-      const result = new Map<string, number>();
-      // initData
-      for (let i = 0; i < this.day; i++) {
-        result.set((i + 1).toString(), 0);
+    // 支出列表
+    get expenseList() {
+      if (this.selectedOption === 'year') {
+        return this.typeFilter(this.currentYearRecordList, '-');
+      } else {
+        return this.typeFilter(this.currentMonthRecordList, '-');
       }
-      for (const record of recordList) {
-        const key = dayjs(record.createdAt).date().toString();
+    }
+
+    // 收入列表
+    get incomeList() {
+      if (this.selectedOption === 'year') {
+        return this.typeFilter(this.currentYearRecordList, '+');
+      } else {
+        return this.typeFilter(this.currentMonthRecordList, '+');
+      }
+    }
+
+    // 支出分类列表
+    get kindList() {
+      const {expenseList} = this;
+      const result: string[] = [];
+      for (let i = 0; i < expenseList.length; i++) {
+        result.push(expenseList[i].tag.value);
+      }
+      return Array.from(new Set(result));
+    }
+
+    // 排行榜数据计算器
+    get kindMap() {
+      const {kindList, expenseList} = this;
+      const result = new Map<string, number>();
+      for (let i = 0; i < kindList.length; i++) {
+        result.set(kindList[i], 0);
+      }
+      for (const record of expenseList) {
+        const key = record.tag.value;
         const amount = result.get(key) as number;
         result.set(key, amount + record.amount);
       }
+      result.forEach((value, key) => {
+        const value2 = (value / parseFloat(this.totalAmount[0])) * 100;
+        result.set(key, value2);
+      });
       return result;
     }
 
-    // 处理年数据
-    yearMap(recordList: RecordItem[]) {
+    intervalMap(recordList: RecordItem[]) {
       const result = new Map<string, number>();
-      const keys = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-      for (const month of keys) {
-        result.set(month, 0);
-      }
-      for (const record of recordList) {
-        const key = keys[dayjs(record.createdAt).month()];
-        const amount = result.get(key) as number;
-        result.set(key, amount + record.amount);
+      if (this.selectedOption === 'year') {
+        const keys = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+        for (const month of keys) {
+          result.set(month, 0);
+        }
+        for (const record of recordList) {
+          const key = keys[dayjs(record.createdAt).month()];
+          const amount = result.get(key) as number;
+          result.set(key, amount + record.amount);
+        }
+      } else {
+        for (let i = 0; i < this.day; i++) {
+          result.set((i + 1).toString(), 0);
+        }
+        for (const record of recordList) {
+          const key = dayjs(record.createdAt).date().toString();
+          const amount = result.get(key) as number;
+          result.set(key, amount + record.amount);
+        }
       }
       return result;
     }
-
 
     // 图表数据计算器
     calculateChartData(): Map<string, number>[] {
-      let expenseMap = new Map<string, number>();
-      let incomeMap = new Map<string, number>();
-      if (this.selectedOption === 'year') {
-        expenseMap = this.yearMap(this.yearExpense);
-        incomeMap = this.yearMap(this.yearIncome);
-      } else if (this.selectedOption === 'month') {
-        expenseMap = this.monthMap(this.monthExpense);
-        incomeMap = this.monthMap(this.monthIncome);
-      }
+      const expenseMap = this.intervalMap(this.expenseList);
+      const incomeMap = this.intervalMap(this.incomeList);
       return [expenseMap, incomeMap];
     }
 
-    // 计算总值
+    // 计算总值 string
     get totalAmount() {
-      let totalExpenseAmount = 0;
-      let totalIncomeAmount = 0;
+      let sum1 = 0;
+      let sum2 = 0;
+      let totalExpenseAmount = '0';
+      let totalIncomeAmount = '0';
       const result = this.calculateChartData();
       const totalExpenseList = [...result[0].values()];
       const totalIncomeList = [...result[1].values()];
       for (let i = 0; i < totalExpenseList.length; i++) {
-        totalExpenseAmount += totalExpenseList[i];
-        totalExpenseAmount = parseFloat(retainDecimal(totalExpenseAmount));
+        sum1 += totalExpenseList[i];
+        totalExpenseAmount = retainDecimal(sum1);
       }
       for (let i = 0; i < totalIncomeList.length; i++) {
-        totalIncomeAmount += totalIncomeList[i];
-        totalIncomeAmount = parseFloat(retainDecimal(totalIncomeAmount));
+        sum2 += totalIncomeList[i];
+        totalIncomeAmount = retainDecimal(sum2);
       }
       return [totalExpenseAmount, totalIncomeAmount];
     }
 
-
-    // 计算均值
+    // 计算均值 string
     get averageAmount() {
       let averageExpense;
       let averageIncome;
       const result = this.calculateChartData();
       const totalExpenseList = [...result[0].keys()];
       const totalIncomeList = [...result[1].keys()];
-      averageExpense = this.totalAmount[0] / (totalExpenseList.length);
-      averageIncome = this.totalAmount[0] / (totalIncomeList.length);
-      averageIncome = parseFloat(retainDecimal(averageIncome));
-      averageExpense = parseFloat(retainDecimal(averageExpense));
+      averageExpense = parseFloat(this.totalAmount[0]) / (totalExpenseList.length);
+      averageIncome = parseFloat(this.totalAmount[1]) / (totalIncomeList.length);
+      averageIncome = retainDecimal(averageIncome);
+      averageExpense = retainDecimal(averageExpense);
       return [averageExpense, averageIncome];
     }
 
     makeChart(data: Map<string, number>[]) {
       const content = echarts.init(document.getElementById('content') as HTMLDivElement, undefined, {renderer: 'svg'});
-      // const x = [...this.yearMap(this.yearExpense).keys()];
-      // const y1 = [...this.yearMap(this.yearExpense).values()];
-      // const y2 = [...this.yearMap(this.yearIncome).values()];
       const x = [...data[0].keys()];
       const expenseY = [...data[0].values()];
       const incomeY = [...data[1].values()];
