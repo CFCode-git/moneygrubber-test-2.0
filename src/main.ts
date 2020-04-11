@@ -27,7 +27,7 @@ window.onload = function () {
 if (document.documentElement.clientWidth > 500) {
   window.alert('请使用手机打开本页面，以保证浏览效果。');
   const img = document.createElement('img');
-  img.src = './qrcode2.png';
+  img.src = './gitee_qrcode2.png';
   img.style.maxWidth = '200px';
   img.style.position = 'fixed';
   img.style.top = '10%';
