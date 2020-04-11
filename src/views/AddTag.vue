@@ -104,8 +104,6 @@
         </ul>
       </div>
     </div>
-
-
   </div>
 </template>
 
@@ -153,7 +151,7 @@
   @import '~@/assets/styles/helper.scss';
 
   .tag {
-    margin-bottom: 30px;
+    padding-bottom: 30px;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -196,10 +194,7 @@
 
     .contents {
       overflow: auto;
-      /*display: flex;*/
-      /*flex-direction: column;*/
       padding: 20px 8px 0 8px;
-
       .content {
         font-size: 18px;
         padding: 8px 0;
