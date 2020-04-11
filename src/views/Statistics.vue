@@ -42,7 +42,7 @@
             </div>
           </div>
         </header>
-        <div class="records-wrapper" v-if="currentRecordList.length>0">
+        <div class="records-wrapper" v-if="currentMonthRecordList.length>0">
           <ol class="records">
             <li v-for="(group,index) in groupedList" :key="index">
               <div class="recordTitle">
@@ -80,14 +80,15 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
+  import {mixins} from 'vue-class-component';
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';
   import retainDecimal from '@/lib/retainDecimal';
+  import timeHelper from '@/mixins/timeHelper';
 
   @Component({})
-  export default class Statistics extends Vue {
+  export default class Statistics extends mixins(timeHelper) {
     beforeCreate() {
       this.$store.commit('fetchRecordList');
     }
@@ -117,29 +118,29 @@
     }
 
     // 全部记录
-    get recordList() {
-      return (this.$store.state as RootState).recordList;
-    }
+    // get recordList() {
+    //   return (this.$store.state as RootState).recordList;
+    // }
 
-    // 筛选当年当月记录
-    get currentRecordList() {
-      const {recordList} = this;
-      const currentRecordList: RecordItem[] = [];
-      for (let i = 0; i < recordList.length; i++) {
-        if ((dayjs(recordList[i].createdAt).year()) === this.year &&
-          (dayjs(recordList[i].createdAt).month() + 1) === this.month) {
-          currentRecordList.push(recordList[i]);
-        }
-      }
-      return currentRecordList;
-    }
+    // 筛选当月记录
+    // get currentMonthRecordList() {
+    //   const {recordList} = this;
+    //   const result: RecordItem[] = [];
+    //   for (let i = 0; i < recordList.length; i++) {
+    //     if ((dayjs(recordList[i].createdAt).year()) === this.year &&
+    //       (dayjs(recordList[i].createdAt).month() + 1) === this.month) {
+    //       result.push(recordList[i]);
+    //     }
+    //   }
+    //   return result;
+    // }
 
     // 当月总收入 number : string
     get expenseAmount() {
-      const {currentRecordList} = this;
+      const {currentMonthRecordList} = this;
       let amount = 0;
-      let expenseList: RecordItem[] = [];
-      expenseList = currentRecordList.filter(recordItem => recordItem.type === '-');
+      // let expenseList: RecordItem[];
+      const expenseList = currentMonthRecordList.filter(recordItem => recordItem.type === '-');
       for (let i = 0; i < expenseList.length; i++) {
         amount += expenseList[i].amount;
       }
@@ -148,10 +149,10 @@
 
     // 当月总支出  string
     get incomeAmount() {
-      const {currentRecordList} = this;
+      const {currentMonthRecordList} = this;
       let amount = 0;
-      let expenseList: RecordItem[] = [];
-      expenseList = currentRecordList.filter(recordItem => recordItem.type === '+');
+      // const expenseList: RecordItem[]=[];
+      const expenseList = currentMonthRecordList.filter(recordItem => recordItem.type === '+');
       for (let i = 0; i < expenseList.length; i++) {
         amount += expenseList[i].amount;
       }
@@ -169,12 +170,12 @@
 
     // newList排序 result分组
     get groupedList() {
-      const {currentRecordList} = this;
-      if (currentRecordList.length === 0) {
+      const {currentMonthRecordList} = this;
+      if (currentMonthRecordList.length === 0) {
         return [];
       }
       // 由于有sort改变了原来的数组可能会影响依赖于currentRecordList的内容，因此做一个深克隆
-      const newList = clone(currentRecordList).sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
+      const newList = clone(currentMonthRecordList).sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
       const result = [{title: dayjs(newList[0].createdAt).format('YYYY-MM-DD'), items: [newList[0]]}];
       for (let i = 1; i < newList.length; i++) {
         const current = newList[i];

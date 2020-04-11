@@ -45,8 +45,8 @@
 
 
 <script lang="ts">
-  import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
+  import {mixins} from 'vue-class-component';
   import Types from '@/components/Money/Types.vue';
   import dayjs from 'dayjs';
   import isLeapYear from 'dayjs/plugin/isLeapYear.js';
@@ -54,14 +54,15 @@
   import 'zrender/lib/svg/svg';
   import retainDecimal from '@/lib/retainDecimal';
   import clone from '@/lib/clone';
+  import timeHelper from '@/mixins/timeHelper';
 
   @Component({
     components: {Types}
   })
-  export default class Chart extends Vue {
+  export default class Chart extends mixins(timeHelper) {
     selectedOption = 'month';
-    year = dayjs().year();
-    month = dayjs().month() + 1;
+    // year = dayjs().year();
+    // month = dayjs().month() + 1;
     displayWord = ['按年', '按月'];
     optionList = ['year', 'month'];
 
@@ -85,9 +86,9 @@
     }
 
     // 全部记录
-    get recordList() {
-      return (this.$store.state as RootState).recordList;
-    }
+    // get recordList() {
+    //   return (this.$store.state as RootState).recordList;
+    // }
 
     // 当年记录
     get currentYearRecordList() {
@@ -102,17 +103,17 @@
     }
 
     //当月记录
-    get currentMonthRecordList() {
-      const {recordList} = this;
-      const result: RecordItem[] = [];
-      for (let i = 0; i < recordList.length; i++) {
-        if ((dayjs(recordList[i].createdAt).year()) === this.year &&
-          (dayjs(recordList[i].createdAt).month() + 1) === this.month) {
-          result.push(recordList[i]);
-        }
-      }
-      return result;
-    }
+    // get currentMonthRecordList() {
+    //   const {recordList} = this;
+    //   const result: RecordItem[] = [];
+    //   for (let i = 0; i < recordList.length; i++) {
+    //     if ((dayjs(recordList[i].createdAt).year()) === this.year &&
+    //       (dayjs(recordList[i].createdAt).month() + 1) === this.month) {
+    //       result.push(recordList[i]);
+    //     }
+    //   }
+    //   return result;
+    // }
 
     // type筛选器
     typeFilter(recordList: RecordItem[], type: string): RecordItem[] {
