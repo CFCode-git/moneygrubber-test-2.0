@@ -24,14 +24,14 @@ window.onload = function () {
     window.scrollTo(0, 500);
   }, 0);
 };
-// if (document.documentElement.clientWidth > 500) {
-//   window.alert('请使用手机打开本页面，以保证浏览效果。');
-//   const img = document.createElement('img');
-//   img.src = './qrcode.png';
-//   img.style.maxWidth = '100px';
-//   img.style.position = 'fixed';
-//   img.style.top = '10%';
-//   img.style.right = '10%';
-//   img.style.boxShadow = '0 0 10px rgba(0,0,0,0.25)';
-//   document.body.append(img);
-// }
+if (document.documentElement.clientWidth > 500) {
+  window.alert('请使用手机打开本页面，以保证浏览效果。');
+  const img = document.createElement('img');
+  img.src = './qrcode2.png';
+  img.style.maxWidth = '200px';
+  img.style.position = 'fixed';
+  img.style.top = '10%';
+  img.style.right = '10%';
+  img.style.boxShadow = '0 0 10px rgba(0,0,0,0.25)';
+  document.body.append(img);
+}
