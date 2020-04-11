@@ -344,9 +344,9 @@
 
   ::v-deep .chart-item {
     border: 1px solid #333;
-    margin: 16px 0 32px 0;
+    margin: 16px 0 16px 0;
     font-size: 16px;
-    padding: 16px 56px;
+    padding: 8px 56px;
 
     &:nth-child(1) {
       border-radius: 10px 0 0 10px;

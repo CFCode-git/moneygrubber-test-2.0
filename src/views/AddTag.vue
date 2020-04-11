@@ -167,7 +167,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px;
+      padding: 16px;
       background-color: $color-highlight;
       font-size: 18px;
 
@@ -184,7 +184,7 @@
     }
 
     .select {
-      padding: 8px 16px;
+      padding: 16px 16px;
       border-bottom: 1px solid #e8e8e8;
       display: flex;
       justify-content: space-between;

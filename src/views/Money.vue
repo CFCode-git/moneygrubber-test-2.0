@@ -74,6 +74,6 @@
 </style>
 <style lang="scss" scoped>
   ::v-deep .money-item {
-    padding: 15px 20px 5px;
+    padding: 15px 20px 10px;
   }
 </style>
