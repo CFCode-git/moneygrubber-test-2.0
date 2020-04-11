@@ -349,9 +349,9 @@
 
   ::v-deep .chart-item {
     border: 1px solid #333;
-    margin: 16px 0 8px 0;
-    font-size: 14px;
-    padding: 5px 56px;
+    margin: 16px 0 32px 0;
+    font-size: 16px;
+    padding: 16px 56px;
 
     &:nth-child(1) {
       border-radius: 10px 0 0 10px;
@@ -376,14 +376,17 @@
     height: 100%;
     flex-direction: column;
     justify-content: center;
-    .result-wrapper{
+
+    .result-wrapper {
       display: flex;
       height: 100%;
       flex-direction: column;
       justify-content: center;
       overflow: auto;
+
       .chart {
         padding: 8px 16px;
+
         .caption {
           padding: 8px 0;
           border-bottom: 1px solid #ccc;
@@ -407,6 +410,7 @@
           }
         }
       }
+
       .rankedListCaption {
         color: #666;
         padding: 8px 0 0 0;
@@ -414,14 +418,17 @@
         margin: 8px 16px;
         font-size: 16px;
       }
+
       .rankedList {
         color: #666;
         flex-grow: 1;
         overflow: auto;
         padding: 0 16px;
         font-size: 14px;
+
         .content {
           padding-bottom: 8px;
+
           .icon-wrapper {
             padding: 8px 0;
             display: flex;
@@ -443,16 +450,19 @@
         }
       }
     }
-    .noResult{
+
+    .noResult {
       flex-grow: 1;
       padding: 16px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      &-message{
-        padding:30px;
+
+      &-message {
+        padding: 30px;
       }
+
       .noResult-icon {
         width: 128px;
         height: 128px;

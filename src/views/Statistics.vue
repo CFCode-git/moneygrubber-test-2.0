@@ -248,7 +248,7 @@
       flex-direction: column;
       position: relative;
       background-color: $color-highlight;
-
+      padding:8px 0 16px 0;
       > .title {
         text-align: center;
         font-size: 20px;
@@ -349,8 +349,10 @@
       overflow: auto;
       flex-grow: 1;
       .records {
-        overflow: auto;
+        overflow: hidden;
         padding: 16px;
+        flex-grow: 1;
+        overscroll-behavior: contain;
         .recordTitle {
           font-size: 14px;
           display: flex;
