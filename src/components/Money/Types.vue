@@ -7,7 +7,7 @@
       </li>
       <li :class="{[classPrefix+'-item']:classPrefix,
         selected:value=== optionList[1]}"
-          @click="selectType(optionList[1] )">{{displayWord[1] || '收入'}}
+          @click="selectType(optionList[1])">{{displayWord[1] || '收入'}}
       </li>
     </ul>
     <button v-if="cancelButton" class="cancel" @click="cancel">取消</button>
@@ -52,7 +52,7 @@
       background: $color-highlight;
       display: flex;
       font-size: 20px;
-      /*margin-top:5px;*/
+      vertical-align: middle;
       > li {
         width: 50%;
         display: flex;
